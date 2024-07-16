@@ -1,4 +1,6 @@
 package interfaz_grafica;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -35,9 +37,10 @@ public class Interfaz_grafica extends JFrame{
     ListaReproduccion lista_reproduccion;
 	public Interfaz_grafica() {
 		placeComponents();
+		aplicarEstilos();
 		mostrar("ninguno");
 		lista_reproduccion=new ListaReproduccion();
-		cargarCanciones("C:\\Users\\Usuario\\Downloads\\archive\\spotify_data.csv");
+//		cargarCanciones("C:\\Users\\Usuario\\Downloads\\archive\\spotify_data.csv");
 	}
 	public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -214,5 +217,51 @@ public class Interfaz_grafica extends JFrame{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    private void aplicarEstilos() {
+        UIManager.put("Label.font", new Font("Verdana", Font.BOLD, 14));
+        UIManager.put("Button.font", new Font("Verdana", Font.PLAIN, 14));
+        UIManager.put("TextField.font", new Font("Verdana", Font.PLAIN, 14));
+        UIManager.put("ComboBox.font", new Font("Verdana", Font.PLAIN, 14));
+        UIManager.put("TextArea.font", new Font("Verdana", Font.PLAIN, 14));
+
+        panel.setBackground(new Color(50, 50, 50));
+        Color labelColor = new Color(255, 215, 0); 
+        for (JLabel label : listLabels) {
+            label.setForeground(labelColor);
+        }
+        busqueda_.setForeground(labelColor);
+        titulo_.setForeground(labelColor);
+        artista_.setForeground(labelColor);
+        detalles_.setForeground(labelColor);
+        buscar_.setForeground(labelColor);
+        agregar_.setForeground(labelColor);
+        mensaje_.setForeground(labelColor);
+        Color textFieldBgColor = new Color(240, 248, 255); 
+        Color textFieldFgColor = new Color(25, 25, 112); 
+        busquedaText.setBackground(textFieldBgColor);
+        tituloText.setBackground(textFieldBgColor);
+        artistaText.setBackground(textFieldBgColor);
+        songDetail.setBackground(textFieldBgColor);
+        songList.setBackground(textFieldBgColor);
+
+        busquedaText.setForeground(textFieldFgColor);
+        tituloText.setForeground(textFieldFgColor);
+        artistaText.setForeground(textFieldFgColor);
+        songDetail.setForeground(textFieldFgColor);
+        songList.setForeground(textFieldFgColor);
+        Color buttonBgColor = new Color(222, 043, 141); 
+        Color buttonFgColor = Color.WHITE;
+        agregarCancion.setBackground(buttonBgColor);
+        buscarCancion.setBackground(buttonBgColor);
+        eliminarCancion.setBackground(buttonBgColor);
+        agregar.setBackground(buttonBgColor);
+        buscar.setBackground(buttonBgColor);
+
+        agregarCancion.setForeground(buttonFgColor);
+        buscarCancion.setForeground(buttonFgColor);
+        eliminarCancion.setForeground(buttonFgColor);
+        agregar.setForeground(buttonFgColor);
+        buscar.setForeground(buttonFgColor);
     }
 }
