@@ -12,8 +12,22 @@ public class Interfaz_grafica extends JFrame{
 	private List<JLabel>listLabels=new ArrayList<>();
 	private String[]strLabels= {"Título","Artista"};
 	private JComboBox<String> searchAtributes;
-	private JTextArea songDeatil;
+	private JTextArea songDetail;
 	private int x=800,y=600, sizeAtr=strLabels.length,sizeMuestra=2;
+	private JButton buscarCancion;
+    private JButton eliminarCancion;
+    private JButton agregarCancion;
+    private JTextField busquedaText;
+    private JTextField tituloText;
+    private JTextField artistaText;
+    private JLabel busqueda_;
+    private JLabel titulo_;
+    private JLabel artista_;
+    private JLabel detalles_;
+    private JLabel buscar_;
+    private JLabel agregar_;
+    private JButton agregar;
+    private JButton buscar;
 	public Interfaz_grafica() {
 		placeComponents();
 	}
@@ -32,30 +46,17 @@ public class Interfaz_grafica extends JFrame{
 		panel=new JPanel();
 		panel.setLayout(null);
 		setLocationRelativeTo(null);
-		add(panel);
+		getContentPane().add(panel);
 		int a=20,b=30,c=30,d=30,in=20;
-		for(int i=0;i<strLabels.length;i++) {
-			String str=strLabels[i];
-			JLabel label=new JLabel(str);
-			panel.add(label);
-			JTextField jtext=new JTextField();
-			panel.add(jtext);
-			if(i<sizeMuestra) {
-				label.setBounds(in,in+b*i,in*4,in);
-				jtext.setBounds(in*5,in+b*i,in*5,24);
-			}
-			listLabels.add(label);
-			listInputs.add(jtext);
-		}
 		listModel = new DefaultListModel<>();
         songList = new JList<>(listModel);
         JScrollPane tabla=new JScrollPane(songList);
-        tabla.setBounds(in,in*12,in*36,in*12);
+        tabla.setBounds(in,in*14,in*36,in*12);
         panel.add(tabla);
         
-        JButton agregarCancion=new JButton("Agregar Canción");
-        JButton buscarCancion=new JButton("Buscar Canción");
-        JButton eliminarCancion=new JButton("Eliminar Canción");
+        agregarCancion=new JButton("Agregar Canción");
+        buscarCancion=new JButton("Buscar Canción");
+        eliminarCancion=new JButton("Eliminar Canción");
         agregarCancion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				agregarCancion();
@@ -74,9 +75,60 @@ public class Interfaz_grafica extends JFrame{
         panel.add(eliminarCancion);
         panel.add(buscarCancion);
         panel.add(agregarCancion);
-        agregarCancion.setBounds(in*5,in*25,in*7,24);
-        buscarCancion.setBounds(in*15,in*25,in*7,24);
-        eliminarCancion.setBounds(in*25,in*25,in*7,24);
+        agregarCancion.setBounds(20,246,in*7,24);
+        buscarCancion.setBounds(170,246,in*7,24);
+        eliminarCancion.setBounds(320,246,in*7,24);
+        
+        agregar_=new JLabel("Agregar canción:");
+        panel.add(agregar_);
+        agregar_.setBounds(156,44,in*5,24);
+        
+        buscar_=new JLabel("Buscar canción:");
+        panel.add(buscar_);
+        buscar_.setBounds(156,44,in*5,24);
+        
+        busqueda_=new JLabel("Buscar por:");
+        panel.add(busqueda_);
+        busqueda_.setBounds(20,102,in*5,24);
+        
+        titulo_=new JLabel("Título:");
+        panel.add(titulo_);
+        titulo_.setBounds(49,102,in*5,24);
+        
+        artista_=new JLabel("Artista:");
+        panel.add(artista_);
+        artista_.setBounds(49,162,in*5,24);
+        
+        detalles_=new JLabel("Detelles de la canción:");
+        panel.add(detalles_);
+        detalles_.setBounds(541,10,123,24);
+        
+        busquedaText=new JTextField();
+        panel.add(busquedaText);
+        busquedaText.setBounds(99,163,in*5,24);
+        
+        tituloText=new JTextField("");
+        panel.add(tituloText);
+        tituloText.setBounds(99,103,in*5,24);
+        
+        artistaText=new JTextField();
+        panel.add(artistaText);
+        artistaText.setBounds(99,163,in*5,24);
+        
+        songDetail=new JTextArea();
+        panel.add(songDetail);
+        songDetail.setBounds(483,44,227,226);
+        
+        searchAtributes = new JComboBox<>(new String[] {"Título", "Artista", "Género"});
+        panel.add(searchAtributes);
+        searchAtributes.setBounds(99,102,in*5,24);
+        
+        agregar=new JButton("Agregar");
+        panel.add(agregar);
+        agregar.setBounds(219,130,in*7,24);
+        buscar=new JButton("Buscar");
+        panel.add(buscar);
+        buscar.setBounds(219,130,in*7,24);
 	}
 	private void agregarCancion() {
 		
@@ -85,5 +137,6 @@ public class Interfaz_grafica extends JFrame{
 		
 	}
     private void eliminarCancion() {
+    	
 	}
 }
