@@ -209,8 +209,26 @@ public class Interfaz_grafica extends JFrame{
                 String[] valores = linea.split(",");
                 String artista = valores[1];
                 String titulo = valores[2];
+                String trackId = valores[3];
+                int popularidad = Integer.parseInt(valores[4]);
+                int ano = Integer.parseInt(valores[5]);
+                String genero = valores[6];
+                double danceability = Double.parseDouble(valores[7]);
+                double energy = Double.parseDouble(valores[8]);
+                int key = Integer.parseInt(valores[9]);
+                double loudness = Double.parseDouble(valores[10]);
+                int mode = Integer.parseInt(valores[11]);
+                double speechiness = Double.parseDouble(valores[12]);
+                double acousticness = Double.parseDouble(valores[13]);
+                double instrumentalness = Double.parseDouble(valores[14]);
+                double liveness = Double.parseDouble(valores[15]);
+                double valence = Double.parseDouble(valores[16]);
+                double tempo = Double.parseDouble(valores[17]);
+                int durationMs = Integer.parseInt(valores[18]);
+                int timeSignature = Integer.parseInt(valores[19]);
 
-                Cancion cancion = new Cancion(titulo, artista);
+                Cancion cancion = new Cancion(titulo, artista, trackId, popularidad, ano, genero, danceability, energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence, tempo, durationMs, timeSignature);
+                lista_reproduccion.agregarCancion(cancion);
                 lista_reproduccion.agregarCancion(cancion);
                 listModel.addElement(cancion.getTitulo());
             }
