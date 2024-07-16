@@ -30,6 +30,7 @@ public class Interfaz_grafica extends JFrame{
     private JButton buscar;
 	public Interfaz_grafica() {
 		placeComponents();
+		mostrar("ninguno");
 	}
 	public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -126,17 +127,61 @@ public class Interfaz_grafica extends JFrame{
         agregar=new JButton("Agregar");
         panel.add(agregar);
         agregar.setBounds(219,130,in*7,24);
+        agregar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				agregar();
+			}
+        });
+        
         buscar=new JButton("Buscar");
         panel.add(buscar);
         buscar.setBounds(219,130,in*7,24);
+        buscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				buscar();
+			}
+        });
 	}
 	private void agregarCancion() {
-		
+		mostrar("agregar");
 	}
     private void buscarCancion() {
-		
+		mostrar("buscar");
 	}
     private void eliminarCancion() {
-    	
+    	eliminar();
 	}
+    private void agregar() {
+    	
+    }
+    private void buscar() {
+    	
+    }
+    private void eliminar() {
+    	
+    }
+    private void mostrar(String s) {
+    	boolean a=true,b=true;
+    	if(s.equals("agregar")) {
+    		a=true;
+    		b=false;
+    	}else if(s.equals("buscar")) {
+    		a=false;
+    		b=true;
+    	}else if(s.equals("ninguno")) {
+    		a=false;
+    		b=false;
+    	}
+    	titulo_.setVisible(a);
+		artista_.setVisible(a);
+		tituloText.setVisible(a);
+		artistaText.setVisible(a);
+		agregar_.setVisible(a);
+		agregar.setVisible(a);
+		buscar.setVisible(b);
+		busquedaText.setVisible(b);
+		buscar_.setVisible(b);
+		searchAtributes.setVisible(b);
+		busqueda_.setVisible(b);
+    }
 }
