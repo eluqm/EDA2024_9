@@ -61,6 +61,7 @@ public class Interfaz_grafica extends JFrame{
 		int a=20,b=30,c=30,d=30,in=20;
 		listModel = new DefaultListModel<>();
         songList = new JList<>(listModel);
+        songList.addListSelectionListener(e -> mostrarDetallesCancion());
         JScrollPane tabla=new JScrollPane(songList);
         tabla.setBounds(in,in*14,in*36,in*12);
         panel.add(tabla);
@@ -256,7 +257,7 @@ public class Interfaz_grafica extends JFrame{
         agregar_.setForeground(labelColor);
         mensaje_.setForeground(labelColor);
         Color textFieldBgColor = new Color(240, 248, 255); 
-        Color textFieldFgColor = new Color(25, 25, 112); 
+        Color textFieldFgColor = new Color(15, 00, 00); 
         busquedaText.setBackground(textFieldBgColor);
         tituloText.setBackground(textFieldBgColor);
         artistaText.setBackground(textFieldBgColor);
@@ -281,5 +282,32 @@ public class Interfaz_grafica extends JFrame{
         eliminarCancion.setForeground(buttonFgColor);
         agregar.setForeground(buttonFgColor);
         buscar.setForeground(buttonFgColor);
+    }
+    private void mostrarDetallesCancion() {
+    	String titulo = songList.getSelectedValue();
+        Cancion cancion = lista_reproduccion.buscarCancion(titulo);
+        if (cancion != null) {
+            songDetail.setText(("Título: " + cancion.getTitulo() + "\n" +
+                                    "Artista: " + cancion.getArtista() + "\n" +
+                                    "Track ID: " + cancion.getTrackId() + "\n" +
+                                    "Popularidad: " + cancion.getPopularity() + "\n" +
+                                    "Año: " + cancion.getYear() + "\n" +
+                                    "Género: " + cancion.getGenre() + "\n" +
+                                    "Danceabilidad: " + cancion.getDanceability() + "\n" +
+                                    "Energía: " + cancion.getEnergy() + "\n" +
+                                    "Clave: " + cancion.getKey() + "\n" +
+                                    "Sonoridad: " + cancion.getLoudness() + "\n" +
+                                    "Modo: " + cancion.getMode() + "\n" +
+                                    "Habladuría: " + cancion.getSpeechiness() + "\n" +
+                                    "Acousticness: " + cancion.getAcousticness() + "\n" +
+                                    "Instrumentalness: " + cancion.getInstrumentalness() + "\n" +
+                                    "Vivacidad: " + cancion.getLiveness() + "\n" +
+                                    "Valencia: " + cancion.getValence() + "\n" +
+                                    "Tempo: " + cancion.getTempo() + "\n" +
+                                    "Duración (ms): " + cancion.getDurationMs() + "\n" +
+                                    "Compás: " + cancion.getTimeSignature()));
+        } else {
+            songDetail.setText("");
+        }
     }
 }
