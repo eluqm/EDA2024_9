@@ -1,6 +1,9 @@
 package interfaz_grafica;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 import javax.swing.*;
 
@@ -29,9 +32,12 @@ public class Interfaz_grafica extends JFrame{
     private JButton agregar;
     private JButton buscar;
     private JLabel mensaje_;
+    ListaReproduccion lista_reproduccion;
 	public Interfaz_grafica() {
 		placeComponents();
 		mostrar("ninguno");
+		lista_reproduccion=new ListaReproduccion();
+		cargarCanciones("C:\\Users\\Usuario\\Downloads\\archive\\spotify_data.csv");
 	}
 	public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -191,5 +197,22 @@ public class Interfaz_grafica extends JFrame{
 		searchAtributes.setVisible(b);
 		busqueda_.setVisible(b);
 		mensaje_.setText("");
+    }
+    private void cargarCanciones(String rutaArchivo) {
+        String linea;
+        try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
+            br.readLine(); // Saltar la primera línea (cabecera)
+            while ((linea = br.readLine()) != null) {
+                String[] valores = linea.split(",");
+                String artista = valores[1];
+                String titulo = valores[2];
+
+                Cancion cancion = new Cancion(titulo, artista);
+                lista_reproduccion.agregarCancion(cancion);
+                listModel.addElement(cancion.getTitulo());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
