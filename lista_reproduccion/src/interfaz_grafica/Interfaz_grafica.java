@@ -28,6 +28,7 @@ public class Interfaz_grafica extends JFrame{
     private JLabel agregar_;
     private JButton agregar;
     private JButton buscar;
+    private JLabel mensaje_;
 	public Interfaz_grafica() {
 		placeComponents();
 		mostrar("ninguno");
@@ -141,6 +142,9 @@ public class Interfaz_grafica extends JFrame{
 				buscar();
 			}
         });
+        mensaje_=new JLabel("");
+        panel.add(mensaje_);
+        mensaje_.setBounds(254,162,in*6,24);
 	}
 	private void agregarCancion() {
 		mostrar("agregar");
@@ -152,13 +156,16 @@ public class Interfaz_grafica extends JFrame{
     	eliminar();
 	}
     private void agregar() {
-    	
+    	mensaje_.setText("agregando canción...");
+    	mensaje_.setText("canción agregada");
     }
     private void buscar() {
-    	
+    	mensaje_.setText("buscando canciones...");
+    	mensaje_.setText("busqueda finalizada");
     }
     private void eliminar() {
-    	
+    	mensaje_.setText("eliminando canción...");
+    	mensaje_.setText("canción eliminada");
     }
     private void mostrar(String s) {
     	boolean a=true,b=true;
@@ -183,5 +190,6 @@ public class Interfaz_grafica extends JFrame{
 		buscar_.setVisible(b);
 		searchAtributes.setVisible(b);
 		busqueda_.setVisible(b);
+		mensaje_.setText("");
     }
 }
