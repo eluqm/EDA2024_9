@@ -203,6 +203,9 @@ public class Interfaz_grafica extends JFrame{
     }
     private void eliminar() {
     	mensaje_.setText("eliminando canción...");
+    	String titulo = songList.getSelectedValue();
+        lista_reproduccion.eliminarCancion(titulo);
+        listModel.removeElement(titulo);
     	mensaje_.setText("canción eliminada");
     }
     private void mostrar(String s) {
