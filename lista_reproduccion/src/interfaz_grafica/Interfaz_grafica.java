@@ -9,6 +9,12 @@ import java.io.IOException;
 import java.util.*;
 import javax.swing.*;
 
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.exceptions.CsvException;
+import com.opencsv.exceptions.CsvMalformedLineException;
+
 public class Interfaz_grafica extends JFrame{
 	private JPanel panel;
 	private DefaultListModel<String> listModel;
@@ -40,7 +46,7 @@ public class Interfaz_grafica extends JFrame{
 		aplicarEstilos();
 		mostrar("ninguno");
 		lista_reproduccion=new ListaReproduccion();
-//		cargarCanciones("C:\\Users\\Usuario\\Downloads\\archive\\spotify_data.csv");
+		cargarCanciones("C:\\Users\\Usuario\\Downloads\\archive\\spotify_data.csv");
 	}
 	public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
@@ -203,37 +209,50 @@ public class Interfaz_grafica extends JFrame{
 		mensaje_.setText("");
     }
     private void cargarCanciones(String rutaArchivo) {
-        String linea;
-        try (BufferedReader br = new BufferedReader(new FileReader(rutaArchivo))) {
-            br.readLine(); // Saltar la primera línea (cabecera)
-            while ((linea = br.readLine()) != null) {
-                String[] valores = linea.split(",");
-                String artista = valores[1];
-                String titulo = valores[2];
-                String trackId = valores[3];
-                int popularidad = Integer.parseInt(valores[4]);
-                int ano = Integer.parseInt(valores[5]);
-                String genero = valores[6];
-                double danceability = Double.parseDouble(valores[7]);
-                double energy = Double.parseDouble(valores[8]);
-                int key = Integer.parseInt(valores[9]);
-                double loudness = Double.parseDouble(valores[10]);
-                int mode = Integer.parseInt(valores[11]);
-                double speechiness = Double.parseDouble(valores[12]);
-                double acousticness = Double.parseDouble(valores[13]);
-                double instrumentalness = Double.parseDouble(valores[14]);
-                double liveness = Double.parseDouble(valores[15]);
-                double valence = Double.parseDouble(valores[16]);
-                double tempo = Double.parseDouble(valores[17]);
-                int durationMs = Integer.parseInt(valores[18]);
-                int timeSignature = Integer.parseInt(valores[19]);
-
-                Cancion cancion = new Cancion(titulo, artista, trackId, popularidad, ano, genero, danceability, energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence, tempo, durationMs, timeSignature);
-                lista_reproduccion.agregarCancion(cancion);
-                lista_reproduccion.agregarCancion(cancion);
-                listModel.addElement(cancion.getTitulo());
+        try (CSVReader reader = new CSVReaderBuilder(new FileReader(rutaArchivo))
+                .withCSVParser(new CSVParserBuilder()
+                        .withSeparator(',')
+                        .withIgnoreQuotations(false)
+                        .build())
+                .build()) {
+            int lineaActual = -1;
+            String[] nextLine;
+            while ((nextLine = reader.readNext()) != null) {
+                lineaActual++;
+                if (lineaActual == 100000) {
+                    break;
+                }
+                try {
+                    if (nextLine.length < 20) {
+                        continue;
+                    }
+                    String artista = nextLine[1];
+                    String titulo = nextLine[2];
+                    String trackId = nextLine[3];
+                    int popularidad = Integer.parseInt(nextLine[4]);
+                    int ano = Integer.parseInt(nextLine[5]);
+                    String genero = nextLine[6];
+                    double danceability = Double.parseDouble(nextLine[7]);
+                    double energy = Double.parseDouble(nextLine[8]);
+                    int key = Integer.parseInt(nextLine[9]);
+                    double loudness = Double.parseDouble(nextLine[10]);
+                    int mode = Integer.parseInt(nextLine[11]);
+                    double speechiness = Double.parseDouble(nextLine[12]);
+                    double acousticness = Double.parseDouble(nextLine[13]);
+                    double instrumentalness = Double.parseDouble(nextLine[14]);
+                    double liveness = Double.parseDouble(nextLine[15]);
+                    double valence = Double.parseDouble(nextLine[16]);
+                    double tempo = Double.parseDouble(nextLine[17]);
+                    int durationMs = Integer.parseInt(nextLine[18]);
+                    int timeSignature = Integer.parseInt(nextLine[19]);
+                    Cancion cancion = new Cancion(titulo, artista, trackId, popularidad, ano, genero, danceability, energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence, tempo, durationMs, timeSignature);
+                    lista_reproduccion.agregarCancion(cancion);
+                    listModel.addElement(cancion.getTitulo());
+                } catch (IllegalArgumentException e) {
+                    continue;
+                }
             }
-        } catch (IOException e) {
+        } catch (IOException | CsvException e) {
             e.printStackTrace();
         }
     }
