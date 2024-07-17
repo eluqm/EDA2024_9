@@ -176,8 +176,31 @@ public class Interfaz_grafica extends JFrame{
     	mensaje_.setText("canción agregada");
     }
     private void buscar() {
-    	mensaje_.setText("buscando canciones...");
-    	mensaje_.setText("busqueda finalizada");
+    	 mensaje_.setText("buscando canciones...");
+    	    String atributo = (String) searchAtributes.getSelectedItem();
+    	    String terminoBusqueda = busquedaText.getText().toLowerCase();
+    	    DefaultListModel<String> filteredModel = new DefaultListModel<>();
+    	    List<Cancion> resultados = new ArrayList<>();
+
+    	    if (atributo.equals("Título")) {
+    	        for (int i = 0; i < listModel.size(); i++) {
+    	            String titulo = listModel.getElementAt(i);
+    	            Cancion cancion = lista_reproduccion.buscarCancion(titulo);
+    	            if (cancion != null && cancion.getTitulo().toLowerCase().contains(terminoBusqueda)) {
+    	                resultados.add(cancion);
+    	            }
+    	        }
+    	    } else if (atributo.equals("Artista")) {
+    	        resultados = lista_reproduccion.buscarPorArtista(terminoBusqueda);
+    	    } else if (atributo.equals("Género")) {
+    	        resultados = lista_reproduccion.buscarPorGenero(terminoBusqueda);
+    	    }
+
+    	    for (Cancion cancion : resultados) {
+    	        filteredModel.addElement(cancion.getTitulo());
+    	    }
+    	    songList.setModel(filteredModel);
+    	    mensaje_.setText("búsqueda finalizada");
     }
     private void eliminar() {
     	mensaje_.setText("eliminando canción...");
