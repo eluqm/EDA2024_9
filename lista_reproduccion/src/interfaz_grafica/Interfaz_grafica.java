@@ -1,6 +1,8 @@
 package interfaz_grafica;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -17,6 +19,7 @@ import com.opencsv.exceptions.CsvMalformedLineException;
 
 public class Interfaz_grafica extends JFrame{
 	private JPanel panel;
+	private Image image;
 	private DefaultListModel<String> listModel;
 	private JList<String>songList;
 	private List<JTextField>listInputs=new ArrayList<>();
@@ -61,7 +64,15 @@ public class Interfaz_grafica extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
 		
-		panel=new JPanel();
+		image = new ImageIcon(getClass().getResource("/images/music.jpg")).getImage();
+		panel=new JPanel(){
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                if (image != null) {
+                    g.drawImage(image, 10, 10, this); 
+                }
+            }
+        };
 		panel.setLayout(null);
 		setLocationRelativeTo(null);
 		getContentPane().add(panel);
@@ -301,7 +312,7 @@ public class Interfaz_grafica extends JFrame{
         UIManager.put("TextArea.font", new Font("Verdana", Font.PLAIN, 14));
 
         panel.setBackground(new Color(50, 50, 50));
-        Color labelColor = new Color(255, 215, 0); 
+        Color labelColor = new Color(215, 115, 0); 
         for (JLabel label : listLabels) {
             label.setForeground(labelColor);
         }
