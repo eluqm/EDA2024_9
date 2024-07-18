@@ -41,6 +41,7 @@ public class Interfaz_grafica extends JFrame{
     private JButton buscar;
     private JLabel mensaje_;
     ListaReproduccion lista_reproduccion;
+    private boolean isDeleting = false;
 	public Interfaz_grafica() {
 		placeComponents();
 		aplicarEstilos();
@@ -67,7 +68,15 @@ public class Interfaz_grafica extends JFrame{
 		int a=20,b=30,c=30,d=30,in=20;
 		listModel = new DefaultListModel<>();
         songList = new JList<>(listModel);
-        songList.addListSelectionListener(e -> mostrarDetallesCancion());
+        songList.addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting() && !isDeleting) {
+                String selectedTitle = songList.getSelectedValue();
+                if (selectedTitle != null) {
+                    mostrarDetallesCancion();
+                }
+            }
+            mensaje_.setText("");
+        });
         JScrollPane tabla=new JScrollPane(songList);
         tabla.setBounds(in,in*14,in*36,in*12);
         panel.add(tabla);
@@ -203,9 +212,11 @@ public class Interfaz_grafica extends JFrame{
     }
     private void eliminar() {
     	mensaje_.setText("eliminando canción...");
+    	isDeleting = true;
     	String titulo = songList.getSelectedValue();
         lista_reproduccion.eliminarCancion(titulo);
         listModel.removeElement(titulo);
+        isDeleting = false;
     	mensaje_.setText("canción eliminada");
     }
     private void mostrar(String s) {
@@ -273,6 +284,7 @@ public class Interfaz_grafica extends JFrame{
                     Cancion cancion = new Cancion(titulo, artista, trackId, popularidad, ano, genero, danceability, energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence, tempo, durationMs, timeSignature);
                     lista_reproduccion.agregarCancion(cancion);
                     listModel.addElement(cancion.getTitulo());
+//                    System.out.println(cancion.getTitulo());
                 } catch (IllegalArgumentException e) {
                     continue;
                 }
