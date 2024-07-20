@@ -2,6 +2,7 @@ package interfaz_grafica;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,12 +20,14 @@ import com.opencsv.exceptions.CsvMalformedLineException;
 
 public class Interfaz_grafica extends JFrame{
 	private JPanel panel;
+	private JPanel inputPanel;
 	private Image image;
 	private DefaultListModel<String> listModel;
 	private DefaultListModel<String> filteredModel;
 	private JList<String>songList;
 	private List<JTextField>listInputs=new ArrayList<>();
 	private List<JLabel>listLabels=new ArrayList<>();
+	private List<JTextField>listJTextField=new ArrayList<>();
 	private String[]strLabels= {"Título","Artista"};
 	private JComboBox<String> searchAtributes;
 	private JTextArea songDetail;
@@ -33,17 +36,13 @@ public class Interfaz_grafica extends JFrame{
     private JButton eliminarCancion;
     private JButton agregarCancion;
     private JTextField busquedaText;
-    private JTextField tituloText;
-    private JTextField artistaText;
     private JLabel busqueda_;
-    private JLabel titulo_;
-    private JLabel artista_;
     private JLabel detalles_;
     private JLabel buscar_;
     private JLabel agregar_;
     private JButton agregar;
     private JButton buscar;
-    private JLabel mensaje_;
+//    private JLabel mensaje_;
     private JButton aleatorio;
     ListaReproduccion lista_reproduccion;
     private boolean isDeleting = false;
@@ -88,7 +87,7 @@ public class Interfaz_grafica extends JFrame{
                     mostrarDetallesCancion();
                 }
             }
-            mensaje_.setText("");
+//            mensaje_.setText("");
         });
         JScrollPane tabla=new JScrollPane(songList);
         tabla.setBounds(in,in*14,in*36,in*12);
@@ -131,14 +130,6 @@ public class Interfaz_grafica extends JFrame{
         panel.add(busqueda_);
         busqueda_.setBounds(20,102,in*5,24);
         
-        titulo_=new JLabel("Título:");
-        panel.add(titulo_);
-        titulo_.setBounds(49,102,in*5,24);
-        
-        artista_=new JLabel("Artista:");
-        panel.add(artista_);
-        artista_.setBounds(49,162,in*5,24);
-        
         detalles_=new JLabel("Detelles de la canción:");
         panel.add(detalles_);
         detalles_.setBounds(541,10,123,24);
@@ -146,14 +137,6 @@ public class Interfaz_grafica extends JFrame{
         busquedaText=new JTextField();
         panel.add(busquedaText);
         busquedaText.setBounds(99,163,in*5,24);
-        
-        tituloText=new JTextField("");
-        panel.add(tituloText);
-        tituloText.setBounds(99,103,in*5,24);
-        
-        artistaText=new JTextField();
-        panel.add(artistaText);
-        artistaText.setBounds(99,163,in*5,24);
         
         songDetail=new JTextArea();
         panel.add(songDetail);
@@ -165,7 +148,7 @@ public class Interfaz_grafica extends JFrame{
         
         agregar=new JButton("Agregar");
         panel.add(agregar);
-        agregar.setBounds(219,130,in*7,24);
+        agregar.setBounds(20,246,in*7,24);
         agregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				agregar();
@@ -174,24 +157,27 @@ public class Interfaz_grafica extends JFrame{
         
         buscar=new JButton("Buscar");
         panel.add(buscar);
-        buscar.setBounds(219,130,in*7,24);
+        buscar.setBounds(170,246,in*7,24);
         buscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				buscar();
+//				mostrar("buscar");
 			}
         });
-        mensaje_=new JLabel("");
-        panel.add(mensaje_);
-        mensaje_.setBounds(254,162,in*6,24);
+//        mensaje_=new JLabel("");
+//        panel.add(mensaje_);
+//        mensaje_.setBounds(254,162,in*6,24);
         
-        aleatorio=new JButton("canción aleatoria");
+        aleatorio=new JButton("lista aleatoria");
+        aleatorio.setBackground(new Color(255, 0, 128));
         aleatorio.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
-                List<Cancion> cancionesAleatorias = lista_reproduccion.obtenerListaCancionesAleatorias(30); // Obtener 5 canciones aleatorias, por ejemplo
+                List<Cancion> cancionesAleatorias = lista_reproduccion.obtenerListaCancionesAleatorias(30); 
                 if (!cancionesAleatorias.isEmpty()) {
-                    listModel.clear();
+                	DefaultListModel listModel_=(DefaultListModel) songList.getModel();
+                    listModel_.clear();
                     for (Cancion cancion : cancionesAleatorias) {
-                        listModel.addElement(cancion.getTitulo());
+                        listModel_.addElement(cancion.getTitulo());
                     }
                 } else {
                     songDetail.setText("No hay canciones disponibles.");
@@ -199,7 +185,21 @@ public class Interfaz_grafica extends JFrame{
 			}
         });
         panel.add(aleatorio);
-        aleatorio.setBounds(20,529,100,24);
+        aleatorio.setBounds(20,529,123,24);
+        
+        inputPanel=new JPanel(new GridLayout(5, 6, 0, 0));
+        panel.add(inputPanel);
+        inputPanel.setBounds(23, 21, 457, 215);
+        String[]atributos= {"Titulo","Artista","Track ID","Popularidad","Año","Género","Danceabilidad","Energía","Clave","Sonoridad","Modo","Habladuría","Acousticness","Instrumentalness"};
+        for(int i=0;i<atributos.length;i++) {
+        	JLabel jLabel = new JLabel(atributos[i] + ":");
+            JTextField jTextField = new JTextField();
+            listLabels.add(jLabel);
+            listInputs.add(jTextField);
+            inputPanel.add(jLabel);
+            inputPanel.add(jTextField);
+            listJTextField.add(jTextField);
+        }
 	}
 	private void agregarCancion() {
 		mostrar("agregar");
@@ -211,16 +211,24 @@ public class Interfaz_grafica extends JFrame{
     	eliminar();
 	}
     private void agregar() {
-    	mensaje_.setText("agregando canción...");
-    	String titulo = tituloText.getText();
-        String artista = artistaText.getText();
-        Cancion cancion = new Cancion(titulo, artista);
+//    	mensaje_.setText("agregando canción...");
+    	String[] atributos=new String[14];
+    	for(int i=0;i<listJTextField.size();i++) {
+    		String valor;
+    		if(listJTextField.get(i).getText()==null) {
+    			valor="";
+    		}else {
+    			valor=listJTextField.get(i).getText();
+    		}
+    		atributos[i]=valor;
+    	}
+        Cancion cancion = new Cancion(atributos);
         lista_reproduccion.agregarCancion(cancion);
         listModel.addElement(cancion.getTitulo());
-    	mensaje_.setText("canción agregada");
+//    	mensaje_.setText("canción agregada");
     }
     private void buscar() {
-    	mensaje_.setText("buscando canciones...");
+//    	mensaje_.setText("buscando canciones...");
     	String atributo = (String) searchAtributes.getSelectedItem();
         String terminoBusqueda = busquedaText.getText().toLowerCase();
         filteredModel=new DefaultListModel<>();
@@ -238,34 +246,32 @@ public class Interfaz_grafica extends JFrame{
             }
         }
         songList.setModel(filteredModel);
-    	mensaje_.setText("busqueda finalizada");
+//    	mensaje_.setText("busqueda finalizada");
     }
     private void eliminar() {
-    	mensaje_.setText("eliminando canción...");
+//    	mensaje_.setText("eliminando canción...");
     	isDeleting = true;
     	String titulo = songList.getSelectedValue();
         lista_reproduccion.eliminarCancion(titulo);
         ((DefaultListModel<String>) songList.getModel()).removeElement(titulo);
-//        listModel.removeElement(titulo);
         isDeleting = false;
-    	mensaje_.setText("canción eliminada");
+//    	mensaje_.setText("canción eliminada");
     }
     private void mostrar(String s) {
     	boolean a=true,b=true;
+    	JButton visible=null,oculto=null;
     	if(s.equals("agregar")) {
-    		a=true;
-    		b=false;
+    		a=true;b=false;
+    		visible=agregar;oculto=agregarCancion;
+    		buscar.setVisible(false);buscarCancion.setVisible(true);
     	}else if(s.equals("buscar")) {
-    		a=false;
-    		b=true;
+    		a=false;b=true;
+    		visible=buscar;oculto=buscarCancion;
+    		agregar.setVisible(false);agregarCancion.setVisible(true);
     	}else if(s.equals("ninguno")) {
-    		a=false;
-    		b=false;
+    		a=false;b=false;
     	}
-    	titulo_.setVisible(a);
-		artista_.setVisible(a);
-		tituloText.setVisible(a);
-		artistaText.setVisible(a);
+    	inputPanel.setVisible(a);
 		agregar_.setVisible(a);
 		agregar.setVisible(a);
 		buscar.setVisible(b);
@@ -273,7 +279,11 @@ public class Interfaz_grafica extends JFrame{
 		buscar_.setVisible(b);
 		searchAtributes.setVisible(b);
 		busqueda_.setVisible(b);
-		mensaje_.setText("");
+//		mensaje_.setText("");
+		if(visible!=null) {
+			visible.setVisible(true);
+	        oculto.setVisible(false); 	
+		} 
     }
     private void cargarCanciones(String rutaArchivo) {
         try (CSVReader reader = new CSVReaderBuilder(new FileReader(rutaArchivo))
@@ -337,23 +347,17 @@ public class Interfaz_grafica extends JFrame{
             label.setForeground(labelColor);
         }
         busqueda_.setForeground(labelColor);
-        titulo_.setForeground(labelColor);
-        artista_.setForeground(labelColor);
         detalles_.setForeground(labelColor);
         buscar_.setForeground(labelColor);
         agregar_.setForeground(labelColor);
-        mensaje_.setForeground(labelColor);
+//        mensaje_.setForeground(labelColor);
         Color textFieldBgColor = new Color(240, 248, 255); 
         Color textFieldFgColor = new Color(15, 00, 00); 
         busquedaText.setBackground(textFieldBgColor);
-        tituloText.setBackground(textFieldBgColor);
-        artistaText.setBackground(textFieldBgColor);
         songDetail.setBackground(textFieldBgColor);
         songList.setBackground(textFieldBgColor);
 
         busquedaText.setForeground(textFieldFgColor);
-        tituloText.setForeground(textFieldFgColor);
-        artistaText.setForeground(textFieldFgColor);
         songDetail.setForeground(textFieldFgColor);
         songList.setForeground(textFieldFgColor);
         Color buttonBgColor = new Color(222, 043, 141); 
@@ -361,14 +365,16 @@ public class Interfaz_grafica extends JFrame{
         agregarCancion.setBackground(buttonBgColor);
         buscarCancion.setBackground(buttonBgColor);
         eliminarCancion.setBackground(buttonBgColor);
-        agregar.setBackground(buttonBgColor);
-        buscar.setBackground(buttonBgColor);
+        agregar.setBackground(new Color(0, 128, 64));
+        buscar.setBackground(new Color(0, 128, 64));
+        aleatorio.setBackground(buttonBgColor);
 
         agregarCancion.setForeground(buttonFgColor);
         buscarCancion.setForeground(buttonFgColor);
         eliminarCancion.setForeground(buttonFgColor);
         agregar.setForeground(buttonFgColor);
         buscar.setForeground(buttonFgColor);
+        aleatorio.setForeground(buttonFgColor);
     }
     private void mostrarDetallesCancion() {
     	String titulo = songList.getSelectedValue();
