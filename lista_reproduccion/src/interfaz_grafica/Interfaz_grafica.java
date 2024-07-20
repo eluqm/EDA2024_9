@@ -21,6 +21,7 @@ public class Interfaz_grafica extends JFrame{
 	private JPanel panel;
 	private Image image;
 	private DefaultListModel<String> listModel;
+	private DefaultListModel<String> filteredModel;
 	private JList<String>songList;
 	private List<JTextField>listInputs=new ArrayList<>();
 	private List<JLabel>listLabels=new ArrayList<>();
@@ -43,6 +44,7 @@ public class Interfaz_grafica extends JFrame{
     private JButton agregar;
     private JButton buscar;
     private JLabel mensaje_;
+    private JButton aleatorio;
     ListaReproduccion lista_reproduccion;
     private boolean isDeleting = false;
 	public Interfaz_grafica() {
@@ -181,6 +183,23 @@ public class Interfaz_grafica extends JFrame{
         mensaje_=new JLabel("");
         panel.add(mensaje_);
         mensaje_.setBounds(254,162,in*6,24);
+        
+        aleatorio=new JButton("canción aleatoria");
+        aleatorio.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+                List<Cancion> cancionesAleatorias = lista_reproduccion.obtenerListaCancionesAleatorias(30); // Obtener 5 canciones aleatorias, por ejemplo
+                if (!cancionesAleatorias.isEmpty()) {
+                    listModel.clear();
+                    for (Cancion cancion : cancionesAleatorias) {
+                        listModel.addElement(cancion.getTitulo());
+                    }
+                } else {
+                    songDetail.setText("No hay canciones disponibles.");
+                }
+			}
+        });
+        panel.add(aleatorio);
+        aleatorio.setBounds(20,529,100,24);
 	}
 	private void agregarCancion() {
 		mostrar("agregar");
@@ -204,7 +223,7 @@ public class Interfaz_grafica extends JFrame{
     	mensaje_.setText("buscando canciones...");
     	String atributo = (String) searchAtributes.getSelectedItem();
         String terminoBusqueda = busquedaText.getText().toLowerCase();
-        DefaultListModel<String> filteredModel = new DefaultListModel<>();
+        filteredModel=new DefaultListModel<>();
         for (int i = 0; i < listModel.size(); i++) {
             String titulo = listModel.getElementAt(i);
             Cancion cancion = lista_reproduccion.buscarCancion(titulo);
@@ -226,7 +245,8 @@ public class Interfaz_grafica extends JFrame{
     	isDeleting = true;
     	String titulo = songList.getSelectedValue();
         lista_reproduccion.eliminarCancion(titulo);
-        listModel.removeElement(titulo);
+        ((DefaultListModel<String>) songList.getModel()).removeElement(titulo);
+//        listModel.removeElement(titulo);
         isDeleting = false;
     	mensaje_.setText("canción eliminada");
     }
