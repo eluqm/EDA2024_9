@@ -16,4 +16,25 @@ public class ListaEnlazada {
         }
         return n.dato;
      }
+     public void eliminar(T dato){
+        Nodo actual =cabeza;
+        while (actual != null) {
+            if(actual.dato.equals(dato)){
+                if (actual.anterior != null) {
+                    actual.anterior.siguiente = actual.siguiente;
+                }
+                if (actual.siguiente != null) {
+                    actual.siguiente.anterior = actual.anterior;
+                }
+                if (actual == cabeza) {
+                    cabeza = actual.siguiente;
+                }
+                if (actual == cola) {
+                    cola = actual.anterior;
+                }
+                return;
+            }
+            actual = actual.siguiente;
+        }
+    }
 }
