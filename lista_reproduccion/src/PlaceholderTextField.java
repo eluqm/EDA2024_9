@@ -29,4 +29,15 @@ public class PlaceholderTextField extends JTextField {
             }
         });
     }
+    public String getPlaceholder() {
+        return placeholder;
+    }
+
+    public void setPlaceholder(String placeholder) {
+        this.placeholder = placeholder;
+        if (!hasFocus() && getText().isEmpty()) {
+            setText(placeholder);
+            setForeground(Color.GRAY);
+        }
+    }
 }
