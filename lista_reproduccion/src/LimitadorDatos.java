@@ -38,4 +38,26 @@ public class LimitadorDatos {
         this.limitOnly = limitOnly;
         this.isDouble = false;
     }
+    private boolean isValid(String text) {
+        if (limitOnly) {
+            return text.length() <= limite;
+        }
+        try {
+            if (isDouble) {
+                double value = Double.parseDouble(text);
+                if (value < minDouble || value > maxDouble) {
+                    return false;
+                }
+                if (negativo && text.contains("-")) {
+                    return value >= minDouble;
+                }
+                return text.length() <= limite;
+            } else {
+                int value = Integer.parseInt(text);
+                return value >= minInt && value <= maxInt;
+            }
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }
