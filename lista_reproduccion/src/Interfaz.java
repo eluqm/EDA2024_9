@@ -5,7 +5,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
 
-public class Interfaz extends JFrame{
+public class Interfaz extends JFrame {
     JPanel panel = new JPanel();
 
     // paneles contenedores
@@ -52,7 +52,7 @@ public class Interfaz extends JFrame{
         listaCanciones = new ListaEnlazada();
         posicionar();
         aplicarEstilos();
-        new CargarDatosWorker("data/spotify_data.csv", listaCanciones, tablaCanciones).execute();
+        new CargarDatos("data/spotify_data.csv", listaCanciones, tablaCanciones).execute();
 
         tablaCanciones.getSelectionModel().addListSelectionListener(event -> {
             int selectedRow = tablaCanciones.getSelectedRow();
@@ -79,13 +79,15 @@ public class Interfaz extends JFrame{
                 timeSignature.setText(String.valueOf(cancionSeleccionada.getTime_signature()));
             }
         });
-        this.id=listaCanciones.size();
+        this.id = listaCanciones.size();
     }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             new Interfaz().setVisible(true);
         });
     }
+
     public void posicionar() {
         setTitle("Gestor de canciones");
         setSize(800, 600);
@@ -273,7 +275,7 @@ public class Interfaz extends JFrame{
         panel.add(panelCambiarPosicion);
         panelCambiarPosicion.setLayout(null);
 
-        //cambiar posicion de cancion
+        // cambiar posicion de cancion
         JLabel labelCambiarPosicion = new JLabel("Cambiar posicion: ");
         JLabel labelCambiarDe = new JLabel("De: ");
         JLabel labelCambiarA = new JLabel("A: ");
@@ -304,7 +306,7 @@ public class Interfaz extends JFrame{
         panel.add(panelReproduccion);
         panelReproduccion.setLayout(null);
 
-        //guardar lista - reproduccion aleatoria
+        // guardar lista - reproduccion aleatoria
         JButton botonGuardarLista = new JButton("Guardar lista");
         botonGuardarLista.setBounds(253, 10, 91, 21);
         botonGuardarLista.addActionListener(new ActionListener() {
@@ -315,7 +317,7 @@ public class Interfaz extends JFrame{
         });
         panelReproduccion.add(botonGuardarLista);
 
-        //reproduccion aleatoria
+        // reproduccion aleatoria
         JButton botonReproduccionAleatoria = new JButton("Reproduccion aleatoria");
         botonReproduccionAleatoria.setBounds(20, 10, 193, 21);
         botonReproduccionAleatoria.addActionListener(new ActionListener() {
@@ -339,7 +341,7 @@ public class Interfaz extends JFrame{
         buscarPor.addItem("Artista");
         panelBusqueda.add(buscarPor);
 
-        //buscar cancion por
+        // buscar cancion por
         JButton botonBuscar = new JButton("Buscar");
         botonBuscar.setBounds(303, 9, 85, 21);
         botonBuscar.addActionListener(new ActionListener() {
@@ -361,7 +363,7 @@ public class Interfaz extends JFrame{
 
         panelListas.add(listasGuardadas);
 
-        //mostrar lista guardada
+        // mostrar lista guardada
         JButton botonListaGuardada = new JButton("Ir");
         botonListaGuardada.setBounds(184, 11, 85, 21);
         botonListaGuardada.addActionListener(new ActionListener() {
@@ -378,7 +380,7 @@ public class Interfaz extends JFrame{
         panelOpciones.setBounds(395, 10, 102, 124);
         panelOpciones.setLayout(null);
 
-        //añadir cancion
+        // añadir cancion
         JButton botonAñadir = new JButton("Añadir");
         botonAñadir.setBounds(10, 10, 84, 21);
         botonAñadir.addActionListener(new ActionListener() {
@@ -389,7 +391,7 @@ public class Interfaz extends JFrame{
         });
         panelOpciones.add(botonAñadir);
 
-        //eliminar cancion seleccionada
+        // eliminar cancion seleccionada
         JButton botonEliminar = new JButton("Eliminar");
         botonEliminar.setBounds(10, 41, 85, 21);
         botonEliminar.addActionListener(new ActionListener() {
@@ -400,7 +402,7 @@ public class Interfaz extends JFrame{
         });
         panelOpciones.add(botonEliminar);
 
-        //editar cancion seleccionada
+        // editar cancion seleccionada
         JButton botonEditar = new JButton("Editar");
         botonEditar.setBounds(9, 72, 85, 21);
         botonEditar.addActionListener(new ActionListener() {
@@ -411,7 +413,7 @@ public class Interfaz extends JFrame{
         });
         panelOpciones.add(botonEditar);
 
-        //limpiar datos 
+        // limpiar datos
         JButton botonLimpiarDatos = new JButton("Limpiar");
         botonLimpiarDatos.setBounds(9, 103, 85, 21);
         botonLimpiarDatos.addActionListener(new ActionListener() {
@@ -442,7 +444,7 @@ public class Interfaz extends JFrame{
         }
         panelFiltro.add(añoEspecifico);
 
-        //filtrar canciones por
+        // filtrar canciones por
         JButton botonFiltrar = new JButton("Filtrar");
         botonFiltrar.setBounds(78, 82, 85, 21);
         botonFiltrar.addActionListener(new ActionListener() {
@@ -464,5 +466,184 @@ public class Interfaz extends JFrame{
         ascendenteDescendente.add(ascendente);
         ascendenteDescendente.add(descendente);
         getContentPane().add(panel);
+    }
+
+    private void añadirCancion() {
+        String tituloCancion = titulo.getText().trim();
+        if (tituloCancion.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El título de la canción es obligatorio.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String artistaCancion = artista.getText().trim().isEmpty() ? "" : artista.getText().trim();
+        String idCancionTexto = idCancion.getText().trim().isEmpty() ? "" : idCancion.getText().trim();
+        int popularidadCancion = popularidad.getText().trim().isEmpty() ? 0
+                : Integer.parseInt(popularidad.getText().trim());
+        int anioCancion = anio.getText().trim().isEmpty() ? 0 : Integer.parseInt(anio.getText().trim());
+        String generoCancion = genero.getText().trim().isEmpty() ? "" : genero.getText().trim();
+        double danceabilityCancion = danceability.getText().trim().isEmpty() ? 0.0
+                : Double.parseDouble(danceability.getText().trim());
+        double energyCancion = energy.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(energy.getText().trim());
+        int keyCancion = key.getText().trim().isEmpty() ? 0 : Integer.parseInt(key.getText().trim());
+        double loudnessCancion = loudness.getText().trim().isEmpty() ? 0.0
+                : Double.parseDouble(loudness.getText().trim());
+        double speechinessCancion = speechiness.getText().trim().isEmpty() ? 0.0
+                : Double.parseDouble(speechiness.getText().trim());
+        double acousticnessCancion = acousticness.getText().trim().isEmpty() ? 0.0
+                : Double.parseDouble(acousticness.getText().trim());
+        double instrumentalnessCancion = instrumentalness.getText().trim().isEmpty() ? 0.0
+                : Double.parseDouble(instrumentalness.getText().trim());
+        double livenessCancion = liveness.getText().trim().isEmpty() ? 0.0
+                : Double.parseDouble(liveness.getText().trim());
+        double valenceCancion = valence.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(valence.getText().trim());
+        double tempoCancion = tempo.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(tempo.getText().trim());
+        int durationMsCancion = durationMs.getText().trim().isEmpty() ? 0
+                : Integer.parseInt(durationMs.getText().trim());
+        int modeCancion = mode.getText().trim().isEmpty() ? 0 : Integer.parseInt(mode.getText().trim());
+        int timeSignatureCancion = timeSignature.getText().trim().isEmpty() ? 0
+                : Integer.parseInt(timeSignature.getText().trim());
+
+        Cancion nuevaCancion = new Cancion(artistaCancion,
+                tituloCancion, idCancionTexto, popularidadCancion, anioCancion,
+                generoCancion, danceabilityCancion, energyCancion, keyCancion, loudnessCancion, modeCancion,
+                speechinessCancion, acousticnessCancion, instrumentalnessCancion, livenessCancion,
+                valenceCancion, tempoCancion, durationMsCancion, timeSignatureCancion, id);
+
+        listaCanciones.agregarCancion(nuevaCancion);
+
+        DefaultTableModel model = (DefaultTableModel) tablaCanciones.getModel();
+        model.addRow(new Object[] {
+                idCancionTexto,
+                tituloCancion,
+                artistaCancion,
+                anioCancion,
+                durationMsCancion,
+                popularidadCancion
+        });
+
+        limpiarDatos();
+        this.id++;
+    }
+
+    private void eliminarCancion() {
+        int selectedRow = tablaCanciones.getSelectedRow();
+        if (selectedRow >= 0) {
+            Cancion cancionAeliminar = listaCanciones.get(selectedRow);
+            listaCanciones.eliminarCancion(cancionAeliminar);
+
+            DefaultTableModel model = (DefaultTableModel) tablaCanciones.getModel();
+            model.removeRow(selectedRow);
+
+            limpiarDatos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione una canción para eliminar.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void editarCancion() {
+        int selectedRow = tablaCanciones.getSelectedRow();
+        if (selectedRow >= 0) {
+            String tituloCancion = titulo.getText().trim();
+            if (tituloCancion.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "El título de la canción es obligatorio.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Cancion cancion = listaCanciones.get(selectedRow);
+
+            cancion.setTrack_name(tituloCancion);
+            cancion.setArtist_name(artista.getText().trim().isEmpty() ? "" : artista.getText().trim());
+            cancion.setTrack_id(idCancion.getText().trim().isEmpty() ? "" : idCancion.getText().trim());
+            cancion.setPopularity(
+                    popularidad.getText().trim().isEmpty() ? 0 : Integer.parseInt(popularidad.getText().trim()));
+            cancion.setYear(anio.getText().trim().isEmpty() ? 0 : Integer.parseInt(anio.getText().trim()));
+            cancion.setGenre(genero.getText().trim().isEmpty() ? "" : genero.getText().trim());
+            cancion.setDanceability(
+                    danceability.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(danceability.getText().trim()));
+            cancion.setEnergy(energy.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(energy.getText().trim()));
+            cancion.setKey(key.getText().trim().isEmpty() ? 0 : Integer.parseInt(key.getText().trim()));
+            cancion.setLoudness(
+                    loudness.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(loudness.getText().trim()));
+            cancion.setSpeechiness(
+                    speechiness.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(speechiness.getText().trim()));
+            cancion.setAcousticness(
+                    acousticness.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(acousticness.getText().trim()));
+            cancion.setInstrumentalness(instrumentalness.getText().trim().isEmpty() ? 0.0
+                    : Double.parseDouble(instrumentalness.getText().trim()));
+            cancion.setLiveness(
+                    liveness.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(liveness.getText().trim()));
+            cancion.setValence(valence.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(valence.getText().trim()));
+            cancion.setTempo(tempo.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(tempo.getText().trim()));
+            cancion.setDuration_ms(
+                    durationMs.getText().trim().isEmpty() ? 0 : Integer.parseInt(durationMs.getText().trim()));
+            cancion.setMode(mode.getText().trim().isEmpty() ? 0 : Integer.parseInt(mode.getText().trim()));
+            cancion.setTime_signature(
+                    timeSignature.getText().trim().isEmpty() ? 0 : Integer.parseInt(timeSignature.getText().trim()));
+
+            DefaultTableModel model = (DefaultTableModel) tablaCanciones.getModel();
+            model.setValueAt(cancion.getTrack_id(), selectedRow, 0);
+            model.setValueAt(cancion.getTrack_name(), selectedRow, 1);
+            model.setValueAt(cancion.getArtist_name(), selectedRow, 2);
+            model.setValueAt(cancion.getYear(), selectedRow, 3);
+            model.setValueAt(cancion.getDuration_ms(), selectedRow, 4);
+            model.setValueAt(cancion.getPopularity(), selectedRow, 5);
+
+            limpiarDatos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Seleccione una canción para editar.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void limpiarDatos() {
+        titulo.setText("");
+        artista.setText("");
+        idCancion.setText("");
+        popularidad.setText("");
+        anio.setText("");
+        genero.setText("");
+        danceability.setText("");
+        energy.setText("");
+        key.setText("");
+        loudness.setText("");
+        speechiness.setText("");
+        acousticness.setText("");
+        instrumentalness.setText("");
+        liveness.setText("");
+        valence.setText("");
+        tempo.setText("");
+        durationMs.setText("");
+        mode.setText("");
+        timeSignature.setText("");
+    }
+
+    private void buscarCancion() {
+
+    }
+
+    private void filtrarCanciones() {
+
+    }
+
+    private void cambiarPosicion() {
+
+    }
+
+    private void guardarLista() {
+
+    }
+
+    private void reproduccionAleatoria() {
+
+    }
+
+    private void irAListaGuardada() {
+
+    }
+    public void aplicarEstilos() {
+
     }
 }
