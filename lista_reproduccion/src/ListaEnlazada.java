@@ -1,8 +1,10 @@
 public class ListaEnlazada {
     private Nodo cabeza, cola;
+    private int size;
     public ListaEnlazada(){
         this.cabeza=null;
         this.cola = null;
+        this.size = 0;
     }
     public T insertar(T dato){
         Nodo nodo = new Nodo(dato);
@@ -14,6 +16,7 @@ public class ListaEnlazada {
             nodo.anterior = cola;
             cola = nodo;
         }
+        size++;
         return n.dato;
      }
      public void eliminar(T dato){
@@ -32,9 +35,13 @@ public class ListaEnlazada {
                 if (actual == cola) {
                     cola = actual.anterior;
                 }
+                size--;
                 return;
             }
             actual = actual.siguiente;
         }
+    }
+    public int size(){
+        return size;
     }
 }
