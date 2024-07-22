@@ -44,4 +44,14 @@ public class ListaEnlazada {
     public int size(){
         return size;
     }
+    public T get(int index){
+        if (index < 0 || index >= size) {
+            return null;
+        }
+        Nodo actual = cabeza;
+        for(int i=0; i<index; i++){
+            actual = actual.siguiente;
+        }
+        return actual.dato;
+    }
 }
