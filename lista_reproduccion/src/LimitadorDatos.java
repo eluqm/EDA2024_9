@@ -76,4 +76,13 @@ public class LimitadorDatos {
             super.replace(fb, offset, length, text, attrs);
         }
     }
+    @Override
+    public void remove(FilterBypass fb, int offset, int length) throws BadLocationException {
+        StringBuilder sb = new StringBuilder(fb.getDocument().getText(0, fb.getDocument().getLength()));
+        sb.delete(offset, offset + length);
+        if (isValid(sb.toString()) || sb.toString().isEmpty()) {
+            super.remove(fb, offset, length);
+        }
+    }
+    
 }
