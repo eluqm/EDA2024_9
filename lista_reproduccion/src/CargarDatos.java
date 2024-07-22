@@ -88,5 +88,10 @@ public class CargarDatos extends SwingWorker<Void, Object[]>{
     public int generarId(){
         return idgenerado++;
     }
-
+    @Override
+    protected void process(List<Object[]> chunks) {
+        for (Object[] rowData : chunks) {
+            modeloTabla.addRow(rowData);
+        }
+    }
 }
