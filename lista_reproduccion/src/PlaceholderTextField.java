@@ -40,4 +40,20 @@ public class PlaceholderTextField extends JTextField {
             setForeground(Color.GRAY);
         }
     }
+    protected void paintComponent(java.awt.Graphics g) {
+        super.paintComponent(g);
+        if (getText().isEmpty() && !(javax.swing.FocusManager.getCurrentKeyboardFocusManager().getFocusOwner() == this)) {
+            int h = getHeight();
+            ((java.awt.Graphics2D) g).setRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING, 
+                    java.awt.RenderingHints.VALUE_ANTIALIAS_ON);
+            java.awt.Insets ins = getInsets();
+            java.awt.FontMetrics fm = g.getFontMetrics();
+            int c0 = getBackground().getRGB();
+            int c1 = getForeground().getRGB();
+            int m = 0xfefefefe;
+            int c2 = ((c0 & m) >>> 1) + ((c1 & m) >>> 1);
+            g.setColor(new java.awt.Color(c2, true));
+            g.drawString(placeholder, ins.left, h / 2 + fm.getAscent() / 2 - 2);
+        }
+    }
 }
