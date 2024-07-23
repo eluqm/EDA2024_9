@@ -6,39 +6,21 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.AbstractDocument;
 
 public class Interfaz extends JFrame {
-    JPanel panel = new JPanel();
-
     // paneles contenedores
-    JPanel panelDatos = new JPanel();
-    JPanel panelTabla = new JPanel();
-    JPanel panelBusqueda = new JPanel();
-    JPanel panelOpciones = new JPanel();
-    JPanel panelDetallesBusqueda = new JPanel();
-    JPanel panelListas = new JPanel();
-    JPanel panelFiltro = new JPanel();
-    JPanel panelCambiarPosicion = new JPanel();
-    JPanel panelReproduccion = new JPanel();
+    JPanel panelDatos;
+    JPanel panelTabla;
+    JPanel panelBusqueda;
+    JPanel panelOpciones;
+    JPanel panelDetallesBusqueda;
+    JPanel panelListas;
+    JPanel panelFiltro;
+    JPanel panelCambiarPosicion;
+    JPanel panelReproduccion;
 
     // datos
-    JTextField titulo;
-    JTextField artista;
-    JTextField idCancion;
-    PlaceholderTextField popularidad;
-    PlaceholderTextField anio;
-    JTextField genero;
-    PlaceholderTextField danceability;
-    PlaceholderTextField energy;
-    PlaceholderTextField key;
-    PlaceholderTextField loudness;
-    JTextField speechiness;
-    PlaceholderTextField acousticness;
-    PlaceholderTextField instrumentalness;
-    PlaceholderTextField liveness;
-    PlaceholderTextField valence;
-    JTextField tempo;
-    JTextField durationMs;
-    PlaceholderTextField mode;
-    PlaceholderTextField timeSignature;
+    JTextField titulo, artista, idCancion, genero, speechiness, tempo, id;
+    PlaceholderTextField popularidad, anio, danceability, energy, key, loudness, acousticness;
+    PlaceholderTextField instrumentalness, liveness, valence, mode, timeSignature, durationMs;
 
     JTable tablaCanciones;
     private JTextField buscar;
@@ -46,13 +28,15 @@ public class Interfaz extends JFrame {
     private JTextField cambiarA;
 
     ListaEnlazada listaCanciones;
-    private int id;
+    private int idgenerado;
 
     public Interfaz() {
         listaCanciones = new ListaEnlazada();
+        tablaCanciones = new JTable(
+                new DefaultTableModel(new Object[] { "ID", "Nombre", "Artista", "Año", "Duración", "Popularidad" }, 0));
         posicionar();
-        aplicarEstilos();
-        new CargarDatos("data/spotify_data.csv", listaCanciones, tablaCanciones).execute();
+
+        new CargarDatosWorker("data/spotify_data.csv", listaCanciones, tablaCanciones).execute();
 
         tablaCanciones.getSelectionModel().addListSelectionListener(event -> {
             int selectedRow = tablaCanciones.getSelectedRow();
@@ -77,9 +61,10 @@ public class Interfaz extends JFrame {
                 durationMs.setText(String.valueOf(cancionSeleccionada.getDuration_ms()));
                 mode.setText(String.valueOf(cancionSeleccionada.getMode()));
                 timeSignature.setText(String.valueOf(cancionSeleccionada.getTime_signature()));
+                id.setText(String.valueOf(cancionSeleccionada.getId()));
             }
         });
-        this.id = listaCanciones.size();
+        this.id.setEditable(false);
     }
 
     public static void main(String[] args) {
@@ -643,6 +628,7 @@ public class Interfaz extends JFrame {
     private void irAListaGuardada() {
 
     }
+
     public void aplicarEstilos() {
 
     }
