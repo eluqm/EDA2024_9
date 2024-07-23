@@ -453,6 +453,86 @@ public class Interfaz extends JFrame {
         getContentPane().add(panel);
     }
 
+    private void agregarCampos(JPanel panel) {
+        titulo = new JTextField();
+        artista = new JTextField();
+        idCancion = new JTextField();
+
+        popularidad = new PlaceholderTextField("0-100");
+        ((AbstractDocument) popularidad.getDocument()).setDocumentFilter(new LimitadorDatos(0, 100));
+        anio = new PlaceholderTextField("Introduzca un año entre 1860-2024");
+        ((AbstractDocument) anio.getDocument()).setDocumentFilter(new LimitadorDatos(0, 2024));
+        genero = new JTextField();
+        danceability = new PlaceholderTextField("0-1.0");
+        ((AbstractDocument) danceability.getDocument()).setDocumentFilter(new LimitadorDatos(0.0, 1.0, 4, true));
+        energy = new PlaceholderTextField("0-1.0");
+        ((AbstractDocument) energy.getDocument()).setDocumentFilter(new LimitadorDatos(0.0, 1.0, 4, true));
+        key = new PlaceholderTextField("0-11");
+        ((AbstractDocument) key.getDocument()).setDocumentFilter(new LimitadorDatos(0, 11));
+        loudness = new PlaceholderTextField("dbs -60 a 0");
+        ((AbstractDocument) loudness.getDocument()).setDocumentFilter(new LimitadorDatos(-60.0, 0.0, 6, true));
+        speechiness = new JTextField();
+        acousticness = new PlaceholderTextField("0-1.0");
+        ((AbstractDocument) acousticness.getDocument()).setDocumentFilter(new LimitadorDatos(0.0, 1.0, 4, true));
+        instrumentalness = new PlaceholderTextField("0-1.0");
+        ((AbstractDocument) instrumentalness.getDocument()).setDocumentFilter(new LimitadorDatos(0.0, 1.0, 4, true));
+        liveness = new PlaceholderTextField("0-1.0");
+        ((AbstractDocument) liveness.getDocument()).setDocumentFilter(new LimitadorDatos(0.0, 1.0, 4, true));
+        valence = new PlaceholderTextField("0-1.0");
+        ((AbstractDocument) valence.getDocument()).setDocumentFilter(new LimitadorDatos(0.0, 1.0, 4, true));
+        tempo = new JTextField();
+        durationMs = new PlaceholderTextField("Duracion en milisegundos");
+        ((AbstractDocument) valence.getDocument()).setDocumentFilter(new LimitadorDatos(0, 10000));
+        mode = new PlaceholderTextField("0-1");
+        ((AbstractDocument) mode.getDocument()).setDocumentFilter(new LimitadorDatos(0, 1));
+        timeSignature = new PlaceholderTextField("0-7");
+        ((AbstractDocument) timeSignature.getDocument()).setDocumentFilter(new LimitadorDatos(0, 7));
+        id = new JTextField();
+        id.setText(String.valueOf(generarId()));
+
+        // Añadir componentes al panel de datos
+        panelDatos.add(new JLabel("Titulo: "));
+        panelDatos.add(titulo);
+        panelDatos.add(new JLabel("Artista(s): "));
+        panelDatos.add(artista);
+        panelDatos.add(new JLabel("ID de la cancion: "));
+        panelDatos.add(idCancion);
+        panelDatos.add(new JLabel("Popularidad: "));
+        panelDatos.add(popularidad);
+        panelDatos.add(new JLabel("Año: "));
+        panelDatos.add(anio);
+        panelDatos.add(new JLabel("Genero: "));
+        panelDatos.add(genero);
+        panelDatos.add(new JLabel("Bailabilidad: "));
+        panelDatos.add(danceability);
+        panelDatos.add(new JLabel("Energia: "));
+        panelDatos.add(energy);
+        panelDatos.add(new JLabel("Clave: "));
+        panelDatos.add(key);
+        panelDatos.add(new JLabel("Volumen: "));
+        panelDatos.add(loudness);
+        panelDatos.add(new JLabel("Speechiness: "));
+        panelDatos.add(speechiness);
+        panelDatos.add(new JLabel("Acustico: "));
+        panelDatos.add(acousticness);
+        panelDatos.add(new JLabel("Instrumentalidad: "));
+        panelDatos.add(instrumentalness);
+        panelDatos.add(new JLabel("Liveness: "));
+        panelDatos.add(liveness);
+        panelDatos.add(new JLabel("Valencia: "));
+        panelDatos.add(valence);
+        panelDatos.add(new JLabel("Tempo: "));
+        panelDatos.add(tempo);
+        panelDatos.add(new JLabel("Mode: "));
+        panelDatos.add(mode);
+        panelDatos.add(new JLabel("Compas: "));
+        panelDatos.add(timeSignature);
+        panelDatos.add(new JLabel("Duracion: "));
+        panelDatos.add(durationMs);
+        panelDatos.add(new JLabel("ID: "));
+        panelDatos.add(id);
+    }
+
     private void añadirCancion() {
         String tituloCancion = titulo.getText().trim();
         if (tituloCancion.isEmpty()) {
