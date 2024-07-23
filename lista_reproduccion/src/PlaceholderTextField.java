@@ -43,6 +43,9 @@ public class PlaceholderTextField extends JTextField {
     public boolean isPlaceholder(){
         return getText().equals(placeholder);
     }
+    public String getRealText() {
+        return isPlaceholder() ? "" : getText();
+    }
     @Override
     protected void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
