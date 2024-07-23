@@ -509,6 +509,7 @@ public class Interfaz extends JFrame {
         durationMs.setText("");
         mode.setText("");
         timeSignature.setText("");
+        id.setText(String.valueOf(generarId()));
     }
 
     private void buscarCancion() {
