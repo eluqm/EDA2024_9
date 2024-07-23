@@ -354,61 +354,68 @@ public class Interfaz extends JFrame {
     }
 
     private void añadirCancion() {
-        String tituloCancion = titulo.getText().trim();
-        if (tituloCancion.isEmpty()) {
+        if (titulo.getText().isEmpty()) {
             JOptionPane.showMessageDialog(this, "El título de la canción es obligatorio.", "Error",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
+        int popularidadS, año, keyS, durationS, timeSignatureS, modeS;
+        double BailabilidadS, energyS, loudnessS, speechinessS, acousticnessS, instrumentalnessS, livenessS, valenceS,
+                tempoS;
+        try {
+            popularidadS = popularidad.getRealText().isEmpty() ? 0 : Integer.parseInt(popularidad.getRealText());
+            año = anio.getRealText().isEmpty() ? 0 : Integer.parseInt(anio.getRealText());
+            keyS = key.getRealText().isEmpty() ? 0 : Integer.parseInt(key.getRealText());
+            durationS = durationMs.getText().isEmpty() ? 0 : Integer.parseInt(durationMs.getText());
+            timeSignatureS = timeSignature.getRealText().isEmpty() ? 0 : Integer.parseInt(timeSignature.getRealText());
+            modeS = mode.getRealText().isEmpty() ? 0 : Integer.parseInt(mode.getRealText());
 
-        String artistaCancion = artista.getText().trim().isEmpty() ? "" : artista.getText().trim();
-        String idCancionTexto = idCancion.getText().trim().isEmpty() ? "" : idCancion.getText().trim();
-        int popularidadCancion = popularidad.getText().trim().isEmpty() ? 0
-                : Integer.parseInt(popularidad.getText().trim());
-        int anioCancion = anio.getText().trim().isEmpty() ? 0 : Integer.parseInt(anio.getText().trim());
-        String generoCancion = genero.getText().trim().isEmpty() ? "" : genero.getText().trim();
-        double danceabilityCancion = danceability.getText().trim().isEmpty() ? 0.0
-                : Double.parseDouble(danceability.getText().trim());
-        double energyCancion = energy.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(energy.getText().trim());
-        int keyCancion = key.getText().trim().isEmpty() ? 0 : Integer.parseInt(key.getText().trim());
-        double loudnessCancion = loudness.getText().trim().isEmpty() ? 0.0
-                : Double.parseDouble(loudness.getText().trim());
-        double speechinessCancion = speechiness.getText().trim().isEmpty() ? 0.0
-                : Double.parseDouble(speechiness.getText().trim());
-        double acousticnessCancion = acousticness.getText().trim().isEmpty() ? 0.0
-                : Double.parseDouble(acousticness.getText().trim());
-        double instrumentalnessCancion = instrumentalness.getText().trim().isEmpty() ? 0.0
-                : Double.parseDouble(instrumentalness.getText().trim());
-        double livenessCancion = liveness.getText().trim().isEmpty() ? 0.0
-                : Double.parseDouble(liveness.getText().trim());
-        double valenceCancion = valence.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(valence.getText().trim());
-        double tempoCancion = tempo.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(tempo.getText().trim());
-        int durationMsCancion = durationMs.getText().trim().isEmpty() ? 0
-                : Integer.parseInt(durationMs.getText().trim());
-        int modeCancion = mode.getText().trim().isEmpty() ? 0 : Integer.parseInt(mode.getText().trim());
-        int timeSignatureCancion = timeSignature.getText().trim().isEmpty() ? 0
-                : Integer.parseInt(timeSignature.getText().trim());
-
-        Cancion nuevaCancion = new Cancion(artistaCancion,
-                tituloCancion, idCancionTexto, popularidadCancion, anioCancion,
-                generoCancion, danceabilityCancion, energyCancion, keyCancion, loudnessCancion, modeCancion,
-                speechinessCancion, acousticnessCancion, instrumentalnessCancion, livenessCancion,
-                valenceCancion, tempoCancion, durationMsCancion, timeSignatureCancion, id);
+            BailabilidadS = danceability.getRealText().isEmpty() ? 0.0 : Double.parseDouble(danceability.getRealText());
+            energyS = energy.getRealText().isEmpty() ? 0.0 : Double.parseDouble(energy.getRealText());
+            loudnessS = loudness.getRealText().isEmpty() ? 0.0 : Double.parseDouble(loudness.getRealText());
+            speechinessS = speechiness.getText().isEmpty() ? 0.0 : Double.parseDouble(speechiness.getText());
+            acousticnessS = acousticness.getRealText().isEmpty() ? 0.0 : Double.parseDouble(acousticness.getRealText());
+            instrumentalnessS = instrumentalness.getRealText().isEmpty() ? 0.0
+                    : Double.parseDouble(instrumentalness.getRealText());
+            livenessS = liveness.getRealText().isEmpty() ? 0.0 : Double.parseDouble(liveness.getRealText());
+            valenceS = valence.getRealText().isEmpty() ? 0.0 : Double.parseDouble(valence.getRealText());
+            tempoS = tempo.getText().isEmpty() ? 0.0 : Double.parseDouble(tempo.getText());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor ingrese valores válidos.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        Cancion nuevaCancion = new Cancion(artista.getText(),
+                titulo.getText(),
+                idCancion.getText(),
+                popularidadS,
+                año,
+                genero.getText(),
+                BailabilidadS,
+                energyS,
+                keyS,
+                loudnessS, modeS,
+                speechinessS,
+                acousticnessS,
+                instrumentalnessS,
+                livenessS,
+                valenceS,
+                tempoS,
+                durationS,
+                timeSignatureS, Integer.parseInt(id.getText()));
 
         listaCanciones.agregarCancion(nuevaCancion);
-
         DefaultTableModel model = (DefaultTableModel) tablaCanciones.getModel();
         model.addRow(new Object[] {
-                idCancionTexto,
-                tituloCancion,
-                artistaCancion,
-                anioCancion,
-                durationMsCancion,
-                popularidadCancion
+                nuevaCancion.getId(),
+                nuevaCancion.getTrack_name(),
+                nuevaCancion.getArtist_name(),
+                nuevaCancion.getYear(),
+                nuevaCancion.getDuration_ms(),
+                nuevaCancion.getPopularity()
         });
-
         limpiarDatos();
-        this.id++;
+        generarId();
     }
 
     private void eliminarCancion() {
