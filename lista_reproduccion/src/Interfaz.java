@@ -532,7 +532,24 @@ public class Interfaz extends JFrame {
         panelDatos.add(new JLabel("ID: "));
         panelDatos.add(id);
     }
+    private int obtenermaxId() {
+        DefaultTableModel model = (DefaultTableModel) tablaCanciones.getModel();
+        int rowCount = model.getRowCount();
+        int maxId = 0;
+        for (int i = 0; i < rowCount; i++) {
+            int currentId = (int) model.getValueAt(i, 0);
+            if (currentId > maxId) {
+                maxId = currentId;
+            }
+        }
+        System.out.println("id: " + maxId);
+        return maxId + 1;
+    }
 
+    public int generarId() {
+        return obtenermaxId();
+    }
+    
     private void añadirCancion() {
         String tituloCancion = titulo.getText().trim();
         if (tituloCancion.isEmpty()) {
