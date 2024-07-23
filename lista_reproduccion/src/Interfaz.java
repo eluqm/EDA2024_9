@@ -415,7 +415,6 @@ public class Interfaz extends JFrame {
                 nuevaCancion.getPopularity()
         });
         limpiarDatos();
-        generarId();
     }
 
     private void eliminarCancion() {
@@ -449,41 +448,41 @@ public class Interfaz extends JFrame {
             cancion.setTrack_name(tituloCancion);
             cancion.setArtist_name(artista.getText().trim().isEmpty() ? "" : artista.getText().trim());
             cancion.setTrack_id(idCancion.getText().trim().isEmpty() ? "" : idCancion.getText().trim());
-            cancion.setPopularity(
-                    popularidad.getText().trim().isEmpty() ? 0 : Integer.parseInt(popularidad.getText().trim()));
-            cancion.setYear(anio.getText().trim().isEmpty() ? 0 : Integer.parseInt(anio.getText().trim()));
+            cancion.setPopularity(popularidad.getRealText().trim().isEmpty() ? 0
+                    : Integer.parseInt(popularidad.getRealText().trim()));
+            cancion.setYear(anio.getRealText().trim().isEmpty() ? 0 : Integer.parseInt(anio.getRealText().trim()));
             cancion.setGenre(genero.getText().trim().isEmpty() ? "" : genero.getText().trim());
-            cancion.setDanceability(
-                    danceability.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(danceability.getText().trim()));
-            cancion.setEnergy(energy.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(energy.getText().trim()));
-            cancion.setKey(key.getText().trim().isEmpty() ? 0 : Integer.parseInt(key.getText().trim()));
+            cancion.setDanceability(danceability.getRealText().trim().isEmpty() ? 0.0
+                    : Double.parseDouble(danceability.getRealText().trim()));
+            cancion.setEnergy(
+                    energy.getRealText().trim().isEmpty() ? 0.0 : Double.parseDouble(energy.getRealText().trim()));
+            cancion.setKey(key.getRealText().trim().isEmpty() ? 0 : Integer.parseInt(key.getRealText().trim()));
             cancion.setLoudness(
-                    loudness.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(loudness.getText().trim()));
+                    loudness.getRealText().trim().isEmpty() ? 0.0 : Double.parseDouble(loudness.getRealText().trim()));
             cancion.setSpeechiness(
                     speechiness.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(speechiness.getText().trim()));
-            cancion.setAcousticness(
-                    acousticness.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(acousticness.getText().trim()));
-            cancion.setInstrumentalness(instrumentalness.getText().trim().isEmpty() ? 0.0
-                    : Double.parseDouble(instrumentalness.getText().trim()));
+            cancion.setAcousticness(acousticness.getRealText().trim().isEmpty() ? 0.0
+                    : Double.parseDouble(acousticness.getRealText().trim()));
+            cancion.setInstrumentalness(instrumentalness.getRealText().trim().isEmpty() ? 0.0
+                    : Double.parseDouble(instrumentalness.getRealText().trim()));
             cancion.setLiveness(
-                    liveness.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(liveness.getText().trim()));
-            cancion.setValence(valence.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(valence.getText().trim()));
+                    liveness.getRealText().trim().isEmpty() ? 0.0 : Double.parseDouble(liveness.getRealText().trim()));
+            cancion.setValence(
+                    valence.getRealText().trim().isEmpty() ? 0.0 : Double.parseDouble(valence.getRealText().trim()));
             cancion.setTempo(tempo.getText().trim().isEmpty() ? 0.0 : Double.parseDouble(tempo.getText().trim()));
             cancion.setDuration_ms(
-                    durationMs.getText().trim().isEmpty() ? 0 : Integer.parseInt(durationMs.getText().trim()));
-            cancion.setMode(mode.getText().trim().isEmpty() ? 0 : Integer.parseInt(mode.getText().trim()));
-            cancion.setTime_signature(
-                    timeSignature.getText().trim().isEmpty() ? 0 : Integer.parseInt(timeSignature.getText().trim()));
-
+                    durationMs.getRealText().trim().isEmpty() ? 0 : Integer.parseInt(durationMs.getRealText().trim()));
+            cancion.setMode(mode.getRealText().trim().isEmpty() ? 0 : Integer.parseInt(mode.getRealText().trim()));
+            cancion.setTime_signature(timeSignature.getRealText().trim().isEmpty() ? 0
+                    : Integer.parseInt(timeSignature.getRealText().trim()));
+            cancion.setId(cancion.getId());
             DefaultTableModel model = (DefaultTableModel) tablaCanciones.getModel();
-            model.setValueAt(cancion.getTrack_id(), selectedRow, 0);
+            model.setValueAt(cancion.getId(), selectedRow, 0);
             model.setValueAt(cancion.getTrack_name(), selectedRow, 1);
             model.setValueAt(cancion.getArtist_name(), selectedRow, 2);
             model.setValueAt(cancion.getYear(), selectedRow, 3);
             model.setValueAt(cancion.getDuration_ms(), selectedRow, 4);
             model.setValueAt(cancion.getPopularity(), selectedRow, 5);
-
-            limpiarDatos();
         } else {
             JOptionPane.showMessageDialog(this, "Seleccione una canción para editar.", "Error",
                     JOptionPane.ERROR_MESSAGE);
