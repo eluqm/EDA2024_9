@@ -40,6 +40,10 @@ public class PlaceholderTextField extends JTextField {
             setForeground(Color.GRAY);
         }
     }
+    public boolean isPlaceholder(){
+        return getText().equals(placeholder);
+    }
+    @Override
     protected void paintComponent(java.awt.Graphics g) {
         super.paintComponent(g);
         if (getText().isEmpty() && !(javax.swing.FocusManager.getCurrentKeyboardFocusManager().getFocusOwner() == this)) {
