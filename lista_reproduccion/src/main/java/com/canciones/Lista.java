@@ -32,7 +32,6 @@ public class Lista<T> implements Iterable<T> {
     }
     public T[] toArray(T[] array) {
         if (array.length < size()) {
-            // Si el array proporcionado es demasiado pequeño, se crea uno nuevo
             array = (T[]) java.lang.reflect.Array.newInstance(array.getClass().getComponentType(), size());
         }
 
@@ -66,5 +65,4 @@ public class Lista<T> implements Iterable<T> {
             }
         };
     }
-
 }

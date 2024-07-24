@@ -21,15 +21,26 @@ public class Interfaz extends JFrame {
     // datos
     JTextField titulo, artista, idCancion, genero, speechiness, tempo, id;
     PlaceholderTextField popularidad, anio, danceability, energy, key, loudness, acousticness;
-    PlaceholderTextField instrumentalness, liveness, valence, mode, timeSignature, durationMs;
+    PlaceholderTextField instrumentalness, liveness, valence, mode, timeSignature, durationMs, limiteReproduccion;
+
+    // comboBox filtrar
+    JComboBox<String> ordenarPor;
+    JComboBox<Integer> añoEspecifico;
+    JRadioButton ascendente;
+    JRadioButton descendente;
 
     JTable tablaCanciones;
+    JTable tablaResultadosBusqueda = new JTable(
+            new DefaultTableModel(new Object[] { "ID", "Nombre", "Artista", "Año", "Duración", "Popularidad" }, 0));
+
     private JTextField buscar;
     private JTextField cambiarDe;
     private JTextField cambiarA;
 
     ListaEnlazada listaCanciones;
-    private int idgenerado;
+    ListaEnlazada listaAleatoria;
+    private HashMap<String, ListaEnlazada> listasGuardadas = new HashMap<>();
+    JComboBox<String> listasGuardadasComboBox;
 
     public Interfaz() {
         listaCanciones = new ListaEnlazada();
