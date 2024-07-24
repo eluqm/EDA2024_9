@@ -1,6 +1,6 @@
 package com.canciones;
 import javax.swing.text.*;
-public class LimitadorDatos {
+public class LimitadorDatos extends DocumentFilter{
     private int minInt;
     private int maxInt;
     private double minDouble;
