@@ -438,6 +438,7 @@ public class Interfaz extends JFrame {
                 nuevaCancion.getPopularity()
         });
         limpiarDatos();
+        id.setText(String.valueOf(generarId()));
     }
 
     private void eliminarCancion() {
