@@ -1,3 +1,4 @@
+package com.canciones;
 import javax.swing.text.*;
 public class LimitadorDatos {
     private int minInt;

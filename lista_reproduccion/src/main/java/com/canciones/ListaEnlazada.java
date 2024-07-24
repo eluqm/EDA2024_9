@@ -1,5 +1,6 @@
-public class ListaEnlazada {
-    private Nodo cabeza, cola;
+package com.canciones;
+public class ListaEnlazada <T>{
+    private Nodo<T> cabeza, cola;
     private int size;
     public ListaEnlazada(){
         this.cabeza=null;
@@ -7,7 +8,7 @@ public class ListaEnlazada {
         this.size = 0;
     }
     public T insertar(T dato){
-        Nodo nodo = new Nodo(dato);
+        Nodo<T> nodo = new Nodo<>(dato);
         if(this.cabeza == null){
             cabeza = cola = nodo;
         }
@@ -17,10 +18,10 @@ public class ListaEnlazada {
             cola = nodo;
         }
         size++;
-        return n.dato;
+        return nodo.dato;
      }
      public void eliminar(T dato){
-        Nodo actual =cabeza;
+        Nodo<T> actual =cabeza;
         while (actual != null) {
             if(actual.dato.equals(dato)){
                 if (actual.anterior != null) {
@@ -48,7 +49,7 @@ public class ListaEnlazada {
         if (index < 0 || index >= size) {
             return null;
         }
-        Nodo actual = cabeza;
+        Nodo<T> actual = cabeza;
         for(int i=0; i<index; i++){
             actual = actual.siguiente;
         }

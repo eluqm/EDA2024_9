@@ -1,6 +1,7 @@
-public class Nodo {
+package com.canciones;
+public class Nodo <T>{
     T dato;
-    Nodo siguiente, anterior;
+    Nodo<T> siguiente, anterior;
 
     public Nodo(T dato){
         this.dato = dato;

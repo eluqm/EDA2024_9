@@ -1,3 +1,4 @@
+package com.canciones;
 public class Cancion {
     String artist_name;
     String track_name;
@@ -12,16 +13,17 @@ public class Cancion {
     int mode;
     double speechiness;
     double acousticness;
-    String instrumentalness;
+    double instrumentalness;
     double liveness;
     double valence;
     double tempo;
     int duration_ms;
     int time_signature;
+    int id;
     public Cancion(String artist_name, String track_name, String track_id, int popularity, int year, String genre,
             double danceability, double energy, int key, double loudness, int mode, double speechiness,
-            double acousticness, String instrumentalness, double liveness, double valence, double tempo,
-            int duration_ms, int time_signature) {
+            double acousticness, double instrumentalness, double liveness, double valence, double tempo,
+            int duration_ms, int time_signature, int id) {
         this.artist_name = artist_name;
         this.track_name = track_name;
         this.track_id = track_id;
@@ -41,6 +43,13 @@ public class Cancion {
         this.tempo = tempo;
         this.duration_ms = duration_ms;
         this.time_signature = time_signature;
+        this.id = id;
+    }
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
     }
     public Cancion(String artist_name, String track_name, String track_id, int popularity, int year, int duration_ms) {
         this.artist_name = artist_name;
@@ -132,10 +141,10 @@ public class Cancion {
     public void setAcousticness(double acousticness) {
         this.acousticness = acousticness;
     }
-    public String getInstrumentalness() {
+    public double getInstrumentalness() {
         return instrumentalness;
     }
-    public void setInstrumentalness(String instrumentalness) {
+    public void setInstrumentalness(double instrumentalness) {
         this.instrumentalness = instrumentalness;
     }
     public double getLiveness() {

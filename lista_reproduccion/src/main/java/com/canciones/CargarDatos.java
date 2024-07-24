@@ -1,3 +1,5 @@
+package com.canciones;
+
 import javax.swing.SwingWorker;
 import java.io.FileReader;
 import java.io.IOException;
@@ -5,17 +7,18 @@ import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
+
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 public class CargarDatos extends SwingWorker<Void, Object[]>{
-    private final String archivo = "";
-    private final ListaEnlazada listaCanciones = new ListaEnlazada();
-    private final JTable tablaCanciones = new JTable();
-    private final DefaultTableModel modeloTabla = new DefaultTableModel();
+    private String archivo = "";
+    private ListaEnlazada<Cancion> listaCanciones = new ListaEnlazada<>();
+    private JTable tablaCanciones = new JTable();
+    private DefaultTableModel modeloTabla = new DefaultTableModel();
     private int idgenerado;
     
-    public CargarDatosWorker(String archivo, ListaEnlazada listaCanciones, JTable tablaCanciones) {
+    public CargarDatos(String archivo, ListaEnlazada<Cancion> listaCanciones, JTable tablaCanciones) {
         this.archivo = archivo;
         this.listaCanciones = listaCanciones;
         this.tablaCanciones = tablaCanciones;
@@ -65,7 +68,7 @@ public class CargarDatos extends SwingWorker<Void, Object[]>{
                     Cancion cancion = new Cancion(artista, titulo, trackId, popularidad, ano, genero, danceability,
                             energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence,
                             tempo, durationMs, timeSignature, id);
-                    listaCanciones.agregarCancion(cancion);
+                    listaCanciones.insertar(cancion);
 
                     Object[] rowData = {
                             cancion.getId(),

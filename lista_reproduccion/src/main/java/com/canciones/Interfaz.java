@@ -1,3 +1,4 @@
+package com.canciones;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -36,7 +37,7 @@ public class Interfaz extends JFrame {
                 new DefaultTableModel(new Object[] { "ID", "Nombre", "Artista", "Año", "Duración", "Popularidad" }, 0));
         posicionar();
 
-        new CargarDatosWorker("data/spotify_data.csv", listaCanciones, tablaCanciones).execute();
+        new CargarDatos("data/spotify_data.csv", listaCanciones, tablaCanciones).execute();
 
         tablaCanciones.getSelectionModel().addListSelectionListener(event -> {
             int selectedRow = tablaCanciones.getSelectedRow();
