@@ -102,4 +102,26 @@ public class HashMap<K, V> {
             }
         }
     }
+    public Lista<V> values(){
+        Lista<V> valores = new Lista<>();
+        for(Entry<K, V> entry : tabla){
+            Entry<K, V> actual = entry;
+            while (actual != null) {
+               valores.agregar(actual.value); 
+               actual = actual.next;
+            }
+        }
+        return valores;
+    }
+    public Lista<K> keySet() {
+        Lista<K> claves = new Lista<>();
+        for (Entry<K, V> entry : tabla) {
+            Entry<K, V> actual = entry;
+            while (actual != null) {
+                claves.agregar(actual.key);
+                actual = actual.next;
+            }
+        }
+        return claves;
+    }
 }
