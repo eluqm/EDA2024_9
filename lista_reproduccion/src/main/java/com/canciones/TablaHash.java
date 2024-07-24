@@ -25,4 +25,26 @@ public class TablaHash {
     public int size() {
         return this.size;
     }
+    public ListaEnlazada reproduccionAleatoria() {
+        ListaEnlazada listaA = new ListaEnlazada();
+        Set<Integer> usados = new HashSet<>();
+
+        for (int i = 0; i < tabla.size(); i++) {
+            int random;
+            do {
+                random = (int) (Math.random() * tabla.size());
+            } while (usados.contains(random));
+            usados.add(random);
+            listaA.agregarCancion(tabla.get(random));
+        }
+        return listaA;
+    }
+
+    public Lista<Cancion> obtenerTodasLasCanciones() {
+        Lista<Cancion> lista = new Lista<>();
+        for (Cancion cancion : tabla.values()) {
+            lista.agregar(cancion);
+        }
+        return lista;
+    }
 }
