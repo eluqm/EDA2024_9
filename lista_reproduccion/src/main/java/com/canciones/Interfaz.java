@@ -81,7 +81,7 @@ public class Interfaz extends JFrame {
             }
         });
         this.id.setEditable(false);
-        //actualizarListasGuardadasComboBox();
+        // actualizarListasGuardadasComboBox();
     }
 
     public static void main(String[] args) {
@@ -595,6 +595,7 @@ public class Interfaz extends JFrame {
 
         actualizarTablaResultados(cancionesFiltradas);
     }
+
     private ListaEnlazada filtrarPorAño(ListaEnlazada todasLasCanciones, Integer añoSeleccionado) {
         ListaEnlazada cancionesFiltradas = new ListaEnlazada();
         for (Cancion cancion : todasLasCanciones) {
@@ -604,7 +605,8 @@ public class Interfaz extends JFrame {
         }
         return cancionesFiltradas;
     }
-   private ListaEnlazada ordenarCanciones(ListaEnlazada lista, String criterio, boolean ascendente) {
+
+    private ListaEnlazada ordenarCanciones(ListaEnlazada lista, String criterio, boolean ascendente) {
         Comparator<Cancion> comparator = null;
         switch (criterio) {
             case "Popularidad":
@@ -664,9 +666,68 @@ public class Interfaz extends JFrame {
                     "Resultado de filtrado", JOptionPane.INFORMATION_MESSAGE);
         }
     }
- 
-    private void cambiarPosicion() {
 
+    private void cambiarPosicion() {
+        try {
+            int idDe = Integer.parseInt(cambiarDe.getText().trim());
+            int idA = Integer.parseInt(cambiarA.getText().trim());
+
+            // Verificar si ambos IDs son iguales
+            if (idDe == idA) {
+                JOptionPane.showMessageDialog(this, "Los IDs no pueden ser iguales.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Encontrar las posiciones en la lista
+            int posicionDe = -1;
+            int posicionA = -1;
+
+            for (int i = 0; i < listaCanciones.size(); i++) {
+                if (listaCanciones.get(i).getId() == idDe) {
+                    posicionDe = i;
+                }
+                if (listaCanciones.get(i).getId() == idA) {
+                    posicionA = i;
+                }
+                if (posicionDe != -1 && posicionA != -1) {
+                    break;
+                }
+            }
+
+            // Verificar si ambos IDs existen
+            if (posicionDe == -1 || posicionA == -1) {
+                JOptionPane.showMessageDialog(this, "Uno o ambos ID(s) no existen.", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Intercambiar las posiciones en la lista
+            Cancion temp = listaCanciones.get(posicionDe);
+            listaCanciones.set(posicionDe, listaCanciones.get(posicionA));
+            listaCanciones.set(posicionA, temp);
+
+            // Actualizar la tabla
+            DefaultTableModel model = (DefaultTableModel) tablaCanciones.getModel();
+            Object[] rowDe = new Object[model.getColumnCount()];
+            Object[] rowA = new Object[model.getColumnCount()];
+
+            for (int i = 0; i < model.getColumnCount(); i++) {
+                rowDe[i] = model.getValueAt(posicionDe, i);
+                rowA[i] = model.getValueAt(posicionA, i);
+            }
+
+            for (int i = 0; i < model.getColumnCount(); i++) {
+                model.setValueAt(rowDe[i], posicionA, i);
+                model.setValueAt(rowA[i], posicionDe, i);
+            }
+
+            JOptionPane.showMessageDialog(this, "Posiciones intercambiadas con éxito.");
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese valores de ID válidos.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void guardarLista() {
