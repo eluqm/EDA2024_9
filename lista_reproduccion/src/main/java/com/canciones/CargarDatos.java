@@ -12,13 +12,13 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.util.List;
 public class CargarDatos extends SwingWorker<Void, Object[]>{
-    private String archivo = "";
-    private ListaEnlazada<Cancion> listaCanciones = new ListaEnlazada<>();
-    private JTable tablaCanciones = new JTable();
-    private DefaultTableModel modeloTabla = new DefaultTableModel();
+    private final String archivo;
+    private final ListaEnlazada listaCanciones;
+    private final JTable tablaCanciones;
+    private final DefaultTableModel modeloTabla;
     private int idgenerado;
     
-    public CargarDatos(String archivo, ListaEnlazada<Cancion> listaCanciones, JTable tablaCanciones) {
+    public CargarDatos(String archivo, ListaEnlazada listaCanciones, JTable tablaCanciones) {
         this.archivo = archivo;
         this.listaCanciones = listaCanciones;
         this.tablaCanciones = tablaCanciones;
@@ -68,7 +68,7 @@ public class CargarDatos extends SwingWorker<Void, Object[]>{
                     Cancion cancion = new Cancion(artista, titulo, trackId, popularidad, ano, genero, danceability,
                             energy, key, loudness, mode, speechiness, acousticness, instrumentalness, liveness, valence,
                             tempo, durationMs, timeSignature, id);
-                    listaCanciones.insertar(cancion);
+                    listaCanciones.agregarCancion(cancion);
 
                     Object[] rowData = {
                             cancion.getId(),
