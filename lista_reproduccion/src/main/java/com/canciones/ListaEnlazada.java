@@ -71,7 +71,22 @@ public class ListaEnlazada implements Iterable<Cancion> {
         return actual.dato;
     }
 
-    
+    public void set(int index, Cancion cancion) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+        Nodo actual = cabeza;
+        for (int i = 0; i < index; i++) {
+            actual = actual.siguiente;
+        }
+        actual.dato = cancion;
+    }
+
+    public void clear() {
+        cabeza = null;
+        cola = null;
+        size = 0;
+    }
 
     @Override
     public Iterator<Cancion> iterator() {
