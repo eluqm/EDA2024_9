@@ -442,17 +442,22 @@ public class Interfaz extends JFrame {
     }
 
     private void eliminarCancion() {
-        int selectedRow = tablaCanciones.getSelectedRow();
-        if (selectedRow >= 0) {
-            Cancion cancionAeliminar = listaCanciones.get(selectedRow);
-            listaCanciones.eliminarCancion(cancionAeliminar);
+        int[] selectedRows = tablaCanciones.getSelectedRows();
 
+        if (selectedRows.length > 0) {
             DefaultTableModel model = (DefaultTableModel) tablaCanciones.getModel();
-            model.removeRow(selectedRow);
+
+            for (int i = selectedRows.length - 1; i >= 0; i--) {
+                int selectedRow = selectedRows[i];
+                Cancion cancionAeliminar = listaCanciones.get(selectedRow);
+                listaCanciones.eliminarCancion(cancionAeliminar);
+
+                model.removeRow(selectedRow);
+            }
 
             limpiarDatos();
         } else {
-            JOptionPane.showMessageDialog(this, "Seleccione una canción para eliminar.", "Error",
+            JOptionPane.showMessageDialog(this, "Seleccione una o más canciones para eliminar.", "Error",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
