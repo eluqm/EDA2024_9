@@ -40,7 +40,6 @@ public class Interfaz extends JFrame {
     private JTextField cambiarDe;
     private JTextField cambiarA;
 
-    TablaHash cancionesTabla = new TablaHash();
     ListaEnlazada listaCanciones;
     ListaEnlazada listaAleatoria;
     private HashMap<String, ListaEnlazada> listasGuardadas = new HashMap<>();
@@ -546,7 +545,7 @@ public class Interfaz extends JFrame {
     private void buscarCancion(String busqueda, String criterio) {
         DefaultTableModel model = (DefaultTableModel) tablaResultadosBusqueda.getModel();
         model.setRowCount(0);
-        if (cancionesTabla == null) {
+        if (listaCanciones == null) {
             JOptionPane.showMessageDialog(this, "La lista de canciones no está inicializada.", "Error",
                     JOptionPane.ERROR_MESSAGE);
             return;
