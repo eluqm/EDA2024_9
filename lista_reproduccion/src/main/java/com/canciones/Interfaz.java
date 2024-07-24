@@ -541,8 +541,44 @@ public class Interfaz extends JFrame {
         id.setText(String.valueOf(generarId()));
     }
 
-    private void buscarCancion() {
+    private void buscarCancion(String busqueda, String criterio) {
+        DefaultTableModel model = (DefaultTableModel) tablaResultadosBusqueda.getModel();
+        model.setRowCount(0);
+        if (cancionesTabla == null) {
+            JOptionPane.showMessageDialog(this, "La lista de canciones no está inicializada.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
+        for (Cancion cancion : listaCanciones) {
+            boolean coincide = false;
+
+            switch (criterio) {
+                case "Título":
+                    coincide = cancion.getTrack_name().toLowerCase().contains(busqueda.toLowerCase());
+                    break;
+                case "Artista":
+                    coincide = cancion.getArtist_name().toLowerCase().contains(busqueda.toLowerCase());
+                    break;
+            }
+
+            if (coincide) {
+                model.addRow(new Object[] {
+                        cancion.getId(),
+                        cancion.getTrack_name(),
+                        cancion.getArtist_name(),
+                        cancion.getYear(),
+                        cancion.getDuration_ms(),
+                        cancion.getPopularity()
+                });
+            }
+        }
+
+        if (model.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No se encontraron canciones con el criterio especificado.",
+                    "Resultado de búsqueda",
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
     private void filtrarCanciones() {
