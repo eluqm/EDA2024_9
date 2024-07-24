@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Interfaz",
+            "request": "launch",
+            "mainClass": "com.canciones.Interfaz",
+            "projectName": "Lista_reproduccion"
+        },
+    ]
+}
