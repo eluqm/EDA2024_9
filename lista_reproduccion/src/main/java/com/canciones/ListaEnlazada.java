@@ -33,7 +33,7 @@ public class ListaEnlazada implements Iterable<Cancion> {
         return nodo.dato;
     }
 
-    public void eliminar(Cancion dato) {
+    public void eliminarCancion(Cancion dato) {
         Nodo actual = cabeza;
         while (actual != null) {
             if (actual.dato.equals(dato)) {

@@ -1,4 +1,5 @@
 package com.canciones;
+
 import java.awt.*;
 import java.awt.event.*;
 
@@ -37,6 +38,7 @@ public class Interfaz extends JFrame {
     private JTextField cambiarDe;
     private JTextField cambiarA;
 
+    TablaHash cancionesTabla = new TablaHash();
     ListaEnlazada listaCanciones;
     ListaEnlazada listaAleatoria;
     private HashMap<String, ListaEnlazada> listasGuardadas = new HashMap<>();
@@ -47,7 +49,7 @@ public class Interfaz extends JFrame {
         tablaCanciones = new JTable(
                 new DefaultTableModel(new Object[] { "ID", "Nombre", "Artista", "Año", "Duración", "Popularidad" }, 0));
         posicionar();
-
+        listaAleatoria = new ListaEnlazada();
         new CargarDatos("data/spotify_data.csv", listaCanciones, tablaCanciones).execute();
 
         tablaCanciones.getSelectionModel().addListSelectionListener(event -> {
@@ -77,6 +79,7 @@ public class Interfaz extends JFrame {
             }
         });
         this.id.setEditable(false);
+        //actualizarListasGuardadasComboBox();
     }
 
     public static void main(String[] args) {
@@ -135,13 +138,14 @@ public class Interfaz extends JFrame {
         panelFiltro.setLayout(new GridLayout(3, 2));
         panelFiltro.setBorder(BorderFactory.createTitledBorder("Filtrar"));
         // opciones de filtrado
-        JComboBox<String> ordenarPor = new JComboBox<>();
+        ordenarPor = new JComboBox<>();
         ordenarPor.addItem("Popularidad");
         ordenarPor.addItem("Año");
         ordenarPor.addItem("Duracion");
         panelFiltro.add(ordenarPor);
         // año especifico
-        JComboBox<Integer> añoEspecifico = new JComboBox<>();
+        añoEspecifico = new JComboBox<>();
+        añoEspecifico.addItem(null);
         for (int i = 2000; i < 2024; i++) {
             añoEspecifico.addItem(i);
         }
@@ -156,9 +160,9 @@ public class Interfaz extends JFrame {
         });
         // radiobutton ascendente/descendente
         ButtonGroup ascendenteDescendente = new ButtonGroup();
-        JRadioButton ascendente = new JRadioButton("Ascendente");
+        ascendente = new JRadioButton("Ascendente");
         panelFiltro.add(ascendente);
-        JRadioButton descendente = new JRadioButton("Descendente");
+        descendente = new JRadioButton("Descendente");
         panelFiltro.add(descendente);
         ascendenteDescendente.add(ascendente);
         ascendenteDescendente.add(descendente);
@@ -180,9 +184,9 @@ public class Interfaz extends JFrame {
         // boton cambiar posicion
         JButton botonCambiar = new JButton("Cambiar");
         botonCambiar.addActionListener(e -> cambiarPosicion());
+        panelCambiarPosicion.add(labelCambiarDe);
         panelCambiarPosicion.add(cambiarDe);
         panelCambiarPosicion.add(labelCambiarA);
-        panelCambiarPosicion.add(labelCambiarDe);
         panelCambiarPosicion.add(cambiarA);
         panelCambiarPosicion.add(botonCambiar);
         c.gridx = 3;
@@ -202,7 +206,7 @@ public class Interfaz extends JFrame {
         panelBusqueda.add(buscarPor);
         // boton buscar cancion por
         JButton botonBuscar = new JButton("Buscar");
-        botonBuscar.addActionListener(e -> buscarCancion(getName()));
+        botonBuscar.addActionListener(e -> buscarCancion(buscar.getText(), buscarPor.getSelectedItem().toString()));
         panelBusqueda.add(botonBuscar);
         c.gridx = 0;
         c.gridy = 1;
@@ -226,6 +230,10 @@ public class Interfaz extends JFrame {
         panelDetallesBusqueda = new JPanel();
         panelDetallesBusqueda.setLayout(new GridLayout(1, 2));
         panelDetallesBusqueda.setBorder(BorderFactory.createTitledBorder("Detalles de Búsqueda"));
+        tablaResultadosBusqueda.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrollPaneResultados = new JScrollPane(tablaResultadosBusqueda);
+        scrollPaneResultados.setPreferredSize(new Dimension(600, 200));
+        panelDetallesBusqueda.add(scrollPaneResultados, BorderLayout.CENTER);
         c.gridx = 4;
         c.gridy = 2;
         c.gridwidth = 1;
@@ -234,7 +242,9 @@ public class Interfaz extends JFrame {
 
         // panel reproduccion aleatoria
         panelReproduccion = new JPanel();
-        panelReproduccion.setLayout(new GridLayout(1, 2));
+        panelReproduccion.setLayout(new GridLayout(1, 3));
+        limiteReproduccion = new PlaceholderTextField("¿De cuántas canciones será su lista aleatoria?");
+        panelReproduccion.add(limiteReproduccion);
         panelReproduccion.setBorder(BorderFactory.createTitledBorder("Reproducción Aleatoria"));
         JButton botonReproduccionAleatoria = new JButton("Reproduccion aleatoria");
         botonReproduccionAleatoria.addActionListener(e -> reproduccionAleatoria());
@@ -245,7 +255,7 @@ public class Interfaz extends JFrame {
         panelReproduccion.add(botonGuardarLista);
         c.gridx = 0;
         c.gridy = 4;
-        c.gridwidth = 3;
+        c.gridwidth = 4;
         c.weightx = 0.0;
         c.weighty = 0.0;
         add(panelReproduccion, c);
@@ -254,15 +264,15 @@ public class Interfaz extends JFrame {
         panelListas = new JPanel();
         panelListas.setLayout(new GridLayout(1, 3));
         panelListas.setBorder(BorderFactory.createTitledBorder("Listas Guardadas"));
-        JComboBox<String> listasGuardadas = new JComboBox<>();
-        panelListas.add(listasGuardadas);
+        listasGuardadasComboBox = new JComboBox<>();
+        panelListas.add(listasGuardadasComboBox);
         // mostrar lista guardada
         JButton botonListaGuardada = new JButton("Ir");
         botonListaGuardada.addActionListener(e -> irAListaGuardada());
         JLabel labelIrLista = new JLabel("Ir a lista:");
         panelListas.add(labelIrLista);
         panelListas.add(botonListaGuardada);
-        c.gridx = 3;
+        c.gridx = 4;
         c.gridy = 4;
         c.gridwidth = 3;
         add(panelListas, c);
@@ -347,6 +357,7 @@ public class Interfaz extends JFrame {
         panelDatos.add(new JLabel("ID: "));
         panelDatos.add(id);
     }
+
     private int obtenermaxId() {
         DefaultTableModel model = (DefaultTableModel) tablaCanciones.getModel();
         int rowCount = model.getRowCount();
