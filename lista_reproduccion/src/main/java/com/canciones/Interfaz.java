@@ -2,6 +2,8 @@ package com.canciones;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -582,9 +584,87 @@ public class Interfaz extends JFrame {
     }
 
     private void filtrarCanciones() {
+        String criterioOrdenacion = (String) ordenarPor.getSelectedItem();
+        Integer añoSeleccionado = (Integer) añoEspecifico.getSelectedItem();
+        boolean esAscendente = ascendente.isSelected();
 
+        ListaEnlazada cancionesFiltradas = filtrarPorAño(listaCanciones, añoSeleccionado);
+
+        // Ordena las canciones filtradas
+        cancionesFiltradas = ordenarCanciones(cancionesFiltradas, criterioOrdenacion, esAscendente);
+
+        actualizarTablaResultados(cancionesFiltradas);
+    }
+    private ListaEnlazada filtrarPorAño(ListaEnlazada todasLasCanciones, Integer añoSeleccionado) {
+        ListaEnlazada cancionesFiltradas = new ListaEnlazada();
+        for (Cancion cancion : todasLasCanciones) {
+            if (añoSeleccionado == null || cancion.getYear() == añoSeleccionado) {
+                cancionesFiltradas.agregarCancion(cancion);
+            }
+        }
+        return cancionesFiltradas;
+    }
+   private ListaEnlazada ordenarCanciones(ListaEnlazada lista, String criterio, boolean ascendente) {
+        Comparator<Cancion> comparator = null;
+        switch (criterio) {
+            case "Popularidad":
+                comparator = Comparator.comparingInt(Cancion::getPopularity);
+                break;
+            case "Año":
+                comparator = Comparator.comparingInt(Cancion::getYear);
+                break;
+            case "Duracion":
+                comparator = Comparator.comparingInt(Cancion::getDuration_ms);
+                break;
+        }
+
+        if (comparator != null) {
+            if (!ascendente) {
+                comparator = comparator.reversed();
+            }
+            lista = ordenarListaEnlazada(lista, comparator);
+        }
+
+        return lista;
     }
 
+    private ListaEnlazada ordenarListaEnlazada(ListaEnlazada lista, Comparator<Cancion> comparator) {
+        // Convertir a ArrayList para ordenar
+        ArrayList<Cancion> arrayList = new ArrayList<>();
+        for (Cancion cancion : lista) {
+            arrayList.add(cancion);
+        }
+        arrayList.sort(comparator);
+
+        // Volver a convertir a ListaEnlazada
+        ListaEnlazada listaOrdenada = new ListaEnlazada();
+        for (Cancion cancion : arrayList) {
+            listaOrdenada.agregarCancion(cancion);
+        }
+        return listaOrdenada;
+    }
+
+    private void actualizarTablaResultados(ListaEnlazada cancionesFiltradas) {
+        DefaultTableModel model = (DefaultTableModel) tablaResultadosBusqueda.getModel();
+        model.setRowCount(0);
+
+        for (Cancion cancion : cancionesFiltradas) {
+            model.addRow(new Object[] {
+                    cancion.getId(),
+                    cancion.getTrack_name(),
+                    cancion.getArtist_name(),
+                    cancion.getYear(),
+                    cancion.getDuration_ms(),
+                    cancion.getPopularity()
+            });
+        }
+
+        if (model.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "No se encontraron canciones con los filtros especificados.",
+                    "Resultado de filtrado", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+ 
     private void cambiarPosicion() {
 
     }
