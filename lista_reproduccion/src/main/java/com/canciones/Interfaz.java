@@ -81,7 +81,7 @@ public class Interfaz extends JFrame {
             }
         });
         this.id.setEditable(false);
-        // actualizarListasGuardadasComboBox();
+        actualizarListasGuardadasComboBox();
     }
 
     public static void main(String[] args) {
@@ -763,7 +763,7 @@ public class Interfaz extends JFrame {
 
             // Tomar las primeras 'limite' canciones
             canciones = new ArrayList<>(canciones.subList(0, limite));
-            
+
             listaAleatoria.clear(); // Limpiar la lista aleatoria anterior
             for (Cancion cancion : canciones) {
                 listaAleatoria.agregarCancion(cancion);
@@ -786,10 +786,35 @@ public class Interfaz extends JFrame {
     }
 
     private void irAListaGuardada() {
+        String listaSeleccionada = (String) listasGuardadasComboBox.getSelectedItem();
+
+        if (listaSeleccionada == null) {
+            JOptionPane.showMessageDialog(this, "Seleccione una lista guardada.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        ListaEnlazada listaGuardada = listasGuardadas.get(listaSeleccionada);
+        if (listaGuardada == null) {
+            JOptionPane.showMessageDialog(this, "La lista seleccionada no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        DefaultTableModel model = (DefaultTableModel) tablaResultadosBusqueda.getModel();
+        model.setRowCount(0); // Limpiar tabla
+
+        for (Cancion cancion : listaGuardada) {
+            model.addRow(new Object[] { cancion.getId(), cancion.getTrack_name(), cancion.getArtist_name(),
+                    cancion.getYear(), cancion.getDuration_ms(), cancion.getPopularity() });
+        }
+
+        JOptionPane.showMessageDialog(this, "Lista cargada exitosamente.");
 
     }
 
-    public void aplicarEstilos() {
-
+    private void actualizarListasGuardadasComboBox() {
+        listasGuardadasComboBox.removeAllItems();
+        for (String lista : listasGuardadas.keySet()) {
+            listasGuardadasComboBox.addItem(lista);
+        }
     }
 }
