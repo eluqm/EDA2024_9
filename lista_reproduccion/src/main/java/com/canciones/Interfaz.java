@@ -731,11 +731,58 @@ public class Interfaz extends JFrame {
     }
 
     private void guardarLista() {
+        String nombreLista = JOptionPane.showInputDialog(this, "Ingrese un nombre para la lista guardada:");
 
+        if (nombreLista == null || nombreLista.trim().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El nombre no puede estar vacío.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        listasGuardadas.put(nombreLista, new ListaEnlazada(listaAleatoria)); // Guardar una copia de la lista actual
+        listasGuardadasComboBox.addItem(nombreLista); // Actualizar JComboBox
+        JOptionPane.showMessageDialog(this, "Lista guardada exitosamente.");
     }
 
     private void reproduccionAleatoria() {
+        try {
+            int limite = Integer.parseInt(limiteReproduccion.getText().trim());
 
+            if (limite <= 0 || limite > listaCanciones.size()) {
+                JOptionPane.showMessageDialog(this,
+                        "El límite debe ser un número válido entre 1 y " + listaCanciones.size() + ".", "Error",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            ArrayList<Cancion> canciones = new ArrayList<>();
+            for (Cancion cancion : listaCanciones) {
+                canciones.add(cancion);
+            }
+
+            // Barajar las canciones
+            java.util.Collections.shuffle(canciones);
+
+            // Tomar las primeras 'limite' canciones
+            canciones = new ArrayList<>(canciones.subList(0, limite));
+            
+            listaAleatoria.clear(); // Limpiar la lista aleatoria anterior
+            for (Cancion cancion : canciones) {
+                listaAleatoria.agregarCancion(cancion);
+            }
+
+            DefaultTableModel model = (DefaultTableModel) tablaResultadosBusqueda.getModel();
+            model.setRowCount(0); // Limpiar tabla
+
+            for (Cancion cancion : canciones) {
+                model.addRow(new Object[] { cancion.getId(), cancion.getTrack_name(), cancion.getArtist_name(),
+                        cancion.getYear(), cancion.getDuration_ms(), cancion.getPopularity() });
+            }
+
+            JOptionPane.showMessageDialog(this, "Lista de reproducción aleatoria generada.");
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Por favor, ingrese un número válido.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void irAListaGuardada() {
